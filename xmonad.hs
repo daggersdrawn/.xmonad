@@ -33,7 +33,7 @@ import Data.Map ((!))
 
 
 main = do
-    d <- spawnDzen rizumuDzenXft
+    d <- spawnDzen rizumuDzenXft { width = Just $ Percent 35 }
     spawnToDzen "conky -c ~/.conky/dzen" conkyBar
     xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
         { terminal           = "urxvtcd"
@@ -53,8 +53,8 @@ main = do
     where
         conkyBar :: DzenConf
         conkyBar = rizumuDzenXft { alignment  = Just RightAlign
-                                 , xPosition  = Just $ Percent 35
-                                 , width      = Just $ Percent 55
+                                 , xPosition  = Just $ Percent 31.1
+                                 , width      = Just $ Percent 65
                                  }
 
 -- Layouts

@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- |
 -- Module      :  ScratchPadKeys
--- Copyright   :  (c) Patrick Brisbin 2010 
+-- Copyright   :  (c) Patrick Brisbin 2010
 -- License     :  as-is
 --
 -- Maintainer  :  pbrisbin@gmail.com
@@ -13,7 +13,7 @@
 -- generated in /EZConfig/ notation for the scratchpads in the list and
 -- an overall managehook is generated exactly as in the NamedScratchpad
 -- module.
--- 
+--
 -- The command record is also an X () and not a String, this allows me
 -- to pre define some scratchpads here which will auto-magically use
 -- your user-defined terminal.
@@ -58,7 +58,7 @@ import qualified XMonad.StackSet as W
 -- for this module to @~\/.xmonad\/lib\/ScratchPadKeys.hs@ and add the
 -- following to your @~\/.xmonad\/xmonad.hs@:
 --
--- Note: You will also need @'Utils.runInTerminal'@ which can be found 
+-- Note: You will also need @'Utils.runInTerminal'@ which can be found
 -- in @lib\/Utils.hs@.
 --
 -- > import ScratchPadKeys
@@ -105,13 +105,13 @@ scratchPadKeys = fmap (keybind &&& spawnScratchpad)
 -- | Summon, banish, or spawn a single 'ScratchPad'
 spawnScratchpad :: ScratchPad -> X ()
 spawnScratchpad sp = withWindowSet $ \s -> do
-    filterCurrent <- filterM (runQuery $ query sp) . 
+    filterCurrent <- filterM (runQuery $ query sp) .
         maybe [] W.integrate . W.stack . W.workspace $ W.current s
 
     case filterCurrent of
         (x:_) -> do
-            unless 
-                (any ((== "NSP") . W.tag) $ W.workspaces s) $ 
+            unless
+                (any ((== "NSP") . W.tag) $ W.workspaces s) $
                 addHiddenWorkspace "NSP"
 
             windows $ W.shiftWin "NSP" x
@@ -135,10 +135,10 @@ scratchPadList = [scratchMixer, scratchMail, scratchMusic, scratchTop, scratchTe
 -- | A terminal along the bottom edge
 scratchTerminal :: ScratchPad
 scratchTerminal = ScratchPad
-    { keybind  = "M4-t"
+    { keybind  = "M4-`"
     , cmd      = runInTerminal ["-name", "sp-term"]
     , query    = resource =? "sp-term"
-    , hook     = bottomEdge 0.15
+    , hook     = bottomEdge 0.20
     }
 
 -- | ossxmix center screen
@@ -162,9 +162,9 @@ scratchMusic = mkTermSP "ncmpcpp" "M4" $ centerScreen 0.65
 scratchTop :: ScratchPad
 scratchTop = mkTermSP "htop" "M4" $ centerScreen 0.65
 
--- | Makes an in-term scratchpad given executable, modifier, and hook. 
---   Uses modifier and the first letter of the executable as the 
---   keybind. Your terminal must suppor @-name@ and @-e@ and you must 
+-- | Makes an in-term scratchpad given executable, modifier, and hook.
+--   Uses modifier and the first letter of the executable as the
+--   keybind. Your terminal must suppor @-name@ and @-e@ and you must
 --   ensure unique keybinds result.
 mkTermSP :: String -- ^ executable
          -> String -- ^ modifier, ex: \"M\", \"M4-C\", etc

@@ -39,7 +39,7 @@ import Data.List (isInfixOf, isPrefixOf)
 
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
-import XMonad.Hooks.DynamicLog          (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, dzenStrip, defaultPP, pad)
+import XMonad.Hooks.DynamicLog          (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, dzenStrip, pad)
 import XMonad.Hooks.ManageDocks         (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers       (isDialog, isFullscreen, doFullFloat, doCenterFloat)
 import XMonad.Hooks.UrgencyHook         (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
@@ -59,7 +59,7 @@ rizumuStartupHook = do
 
 --{{{ Path variables
 icons = "/home/rizumu/.icons/"
-playtone  = "ogg123 -q /home/rizumu/dotfiles/tones/gudrun_gut-thelandKRZ.ogg"
+urgencytone  = "ogg123 -q /home/rizumu/dotfiles/tones/urgency.ogg"
 --}}}
 
 --{{{ Helper Functions
@@ -93,7 +93,7 @@ myCurrentWsFgColor = "#FFFFFF"
 myCurrentWsBgColor = myHighlightedBgColor
 myVisibleWsFgColor = myBgColor
 myVisibleWsBgColor = "#c8e7a8"
-myHiddenWsFgColor = "#CCDC90"
+myHiddenWsFgColor = "#FFD7A7"
 myHiddenEmptyWsFgColor = "#8F8F8F"
 myUrgentWsBgColor = "#ff6565"
 myTitleFgColor = myFgColor
@@ -110,8 +110,7 @@ rizumuWorkspaces = [" sh ", " emacs ", " www ", " mail ", " irc ", " im ", " ong
 
 -- dzen custom options
 rizumuDzenXft = defaultDzenXft
-    { width   = Just $ Percent 45
-    , font    = Just myFont
+    { font    = Just myFont
     , height  = Just myDzenHeight
     , fgColor = Just myFgColor
     , bgColor = Just myBgColor
@@ -148,12 +147,12 @@ rizumuLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
 -- > logHook = dynamicLogWithPP $ rizumuPP { ppOutput = hPutStrLn d }
 --
 -- rizumuPP :: PP
-rizumuPP = defaultPP
+rizumuPP = dzenPP
     { ppSep = (wrapFg myHighlightedBgColor "|")
     , ppWsSep = ""
     , ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
     , ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
-    , ppHidden = wrapFg myHiddenWsFgColor -- hideNSP
+    , ppHidden = wrapFg myHiddenWsFgColor --hideNSP
     , ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor
     , ppUrgent = wrapBg myUrgentWsBgColor
     , ppTitle = (\x -> "  " ++ wrapFg myTitleFgColor x)
@@ -181,7 +180,7 @@ instance UrgencyHook SpawnSomething where
 
 -- | Ding! on urgent via ossplay and a sound from Gajim.
 rizumuUrgencyHook :: SpawnSomething
-rizumuUrgencyHook = SpawnSomething playtone
+rizumuUrgencyHook = SpawnSomething urgencytone
 
 -- | Default but still show urgent on visible non-focused workspace.
 --
