@@ -6,8 +6,8 @@
 -- git://github.com/davidbeckingsale/xmonad-config.git
 -- git://github.com/pbrisbin/xmonad-config.git
 
-module Utils 
-    ( 
+module Utils
+    (
     -- * Config entries
       rizumuWorkspaces
     , rizumuDzenXft
@@ -35,19 +35,18 @@ module Utils
 
 import XMonad
 
-import System.IO (hPutStrLn)
-
 import Data.List (isInfixOf, isPrefixOf)
 
-import Dzen (DzenConf(..), defaultDzenXft)
+import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
-import XMonad.Hooks.DynamicLog      (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, dzenStrip, defaultPP, pad)
-import XMonad.Hooks.ManageDocks     (manageDocks, avoidStruts)
-import XMonad.Hooks.ManageHelpers   (isDialog, isFullscreen, doFullFloat, doCenterFloat)
-import XMonad.Hooks.UrgencyHook     (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
-import XMonad.Hooks.SetWMName       (setWMName)
-import XMonad.Layout.LayoutHints    (layoutHints)
+import XMonad.Hooks.DynamicLog          (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, dzenStrip, defaultPP, pad)
+import XMonad.Hooks.ManageDocks         (manageDocks, avoidStruts)
+import XMonad.Hooks.ManageHelpers       (isDialog, isFullscreen, doFullFloat, doCenterFloat)
+import XMonad.Hooks.UrgencyHook         (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
+import XMonad.Hooks.SetWMName           (setWMName)
 import XMonad.Layout.IM
+import XMonad.Layout.IndependentScreens
+import XMonad.Layout.LayoutHints        (layoutHints)
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -111,10 +110,11 @@ rizumuWorkspaces = [" sh ", " emacs ", " www ", " mail ", " irc ", " im ", " ong
 
 -- dzen custom options
 rizumuDzenXft = defaultDzenXft
-    { height  = Just myDzenHeight
+    { width   = Just $ Percent 45
+    , font    = Just myFont
+    , height  = Just myDzenHeight
     , fgColor = Just myFgColor
     , bgColor = Just myBgColor
-    , font    = Just myFont
     }
 
 -- | Default plus docks, dialogs and smarter full screening.
@@ -126,7 +126,7 @@ rizumuManageHook = composeAll $ concat
     , [ isFullscreen --> doF W.focusDown <+> doFullFloat ]
     ]
 
--- | Match a string against any one of a window's class, title, name or 
+-- | Match a string against any one of a window's class, title, name or
 --   role.
 matchAny :: String -> Query Bool
 matchAny x = foldr ((<||>) . (=? x)) (return False) [className, title, name, role]
@@ -202,8 +202,8 @@ rizumuUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }
 --   }
 
 
--- | Spawns yeganesh <http://dmwit.com/yeganesh/>, set the environment 
---   variable @$DMENU_OPTIONS@ to customize dmenu appearance, this is a 
+-- | Spawns yeganesh <http://dmwit.com/yeganesh/>, set the environment
+--   variable @$DMENU_OPTIONS@ to customize dmenu appearance, this is a
 --   good @M-p@ replacement.
 yeganesh :: MonadIO m => m ()
 yeganesh = spawn "exe=`dmenu_path | yeganesh -- $DMENU_OPTIONS` && eval \"exec $exe\""
@@ -219,7 +219,7 @@ runInTerminal args = asks config >>= \(XConfig { terminal = t }) -> spawn $ unwo
 spawnInScreen :: String -> X ()
 spawnInScreen c = runInTerminal [ "-title", c, "-e bash -cl", "\"SCREEN_CONF=" ++ c, "screen -S", c, "-R -D", c ++ "\"" ]
 
--- | Kill (@-9@) any running dzen and conky processes before executing 
+-- | Kill (@-9@) any running dzen and conky processes before executing
 --   the default restart command, this is a good @M-q@ replacement.
 cleanStart :: MonadIO m => m ()
 cleanStart = spawn $ "for pid in `pgrep conky`; do kill -9 $pid; done && "

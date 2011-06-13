@@ -8,22 +8,22 @@
 
 import XMonad
 
+import System.IO                        (hPutStrLn)
+
 -- <http://pbrisbin.com/xmonad/docs/Utils.html>
 import Utils
-import Dzen (DzenConf(..), TextAlign(..), defaultDzenXft,
-                spawnDzen, spawnToDzen)
+import Dzen --(DzenConf(..), TextAlign(..), DzenWidth(..), defaultDzenXft,
+            --    spawnDzen, spawnToDzen)
+import ScratchPadKeys                   (scratchPadList, manageScratchPads, scratchPadKeys)
 
-import ScratchPadKeys             (scratchPadList, manageScratchPads, scratchPadKeys)
-import System.IO                  (hPutStrLn)
-import XMonad.Hooks.DynamicLog    (dynamicLogWithPP, PP(..))
-import XMonad.Hooks.ManageHelpers (doCenterFloat)
-import XMonad.Hooks.UrgencyHook   (withUrgencyHookC)
-import XMonad.Util.EZConfig       (additionalKeysP)
-
-import XMonad.Hooks.ManageDocks   (avoidStruts, manageDocks, ToggleStruts(..) )
+import XMonad.Hooks.DynamicLog          (dynamicLogWithPP, PP(..))
+import XMonad.Hooks.ManageDocks         (avoidStruts, manageDocks, ToggleStruts(..) )
+import XMonad.Hooks.ManageHelpers       (doCenterFloat)
+import XMonad.Hooks.UrgencyHook         (withUrgencyHookC)
+import XMonad.Util.EZConfig             (additionalKeysP)
 
 import XMonad.Layout.IM
-import XMonad.Layout.NoBorders    (smartBorders)
+import XMonad.Layout.NoBorders          (smartBorders)
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ResizableTile
 
@@ -33,7 +33,7 @@ import Data.Map ((!))
 
 
 main = do
-    d <- spawnDzen rizumuDzenXft { screen = Just 1 }
+    d <- spawnDzen rizumuDzenXft
     spawnToDzen "conky -c ~/.conky/dzen" conkyBar
     xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
         { terminal           = "urxvtcd"
@@ -52,10 +52,10 @@ main = do
 
     where
         conkyBar :: DzenConf
-        conkyBar = rizumuDzenXft
-            { screen = Just 0
-            , alignment = Just LeftAlign
-            }
+        conkyBar = rizumuDzenXft { alignment  = Just RightAlign
+                                 , xPosition  = Just $ Percent 35
+                                 , width      = Just $ Percent 55
+                                 }
 
 -- Layouts
 myLayoutHook = avoidStruts $ onWorkspace " 4 im " imLayout $ standardLayouts
