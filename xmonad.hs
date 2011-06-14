@@ -1,4 +1,4 @@
---
+
 -- rizumu's xmonad-config
 -- git://github.com/rizumu/rizumu-xmonad.git
 --
@@ -72,6 +72,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 
     where myActions = [ ("Xmessage"       , doCenterFloat     )
                       , ("Gmrun"          , doCenterFloat     )
+                      , ("gitg"           , doCenterFloat     )
                       , ("Pidgin"         , doShift " im "    )
                       , ("Skype"          , doShift " im "    )
                       , ("Chrome"         , doShift " mail "  )
@@ -91,10 +92,10 @@ myKeys = [ ("m1-<Space>"               , yeganesh) -- TODO
          , ("M4-w"                     , spawn "firefox")
          --, ("M4-c"                   , spawn "chromium --app='https://calendar.google.com'")
          , ("M4-f", spawn "urxvt -e mc")
-         , ("M4-n"                     , spawnInScreen "ncmpcpp")
+         -- , ("M4-n"                     , spawnInScreen "ncmpcpp")
          , ("M4-m"                     , spawn "chromium --app='https://mail.google.com'")
          --, ("M4-i"                     , spawnInScreen "irssi" )
-         , ("M4-r"                     , spawnInScreen "rtorrent")
+         --, ("M4-r"                     , spawnInScreen "rtorrent")
          , ("<xK_Print>"               , spawn "scrot")
          , ("<xF86XK_AudioMute>"       , spawn "amixer -q set PCM toggle")
          , ("<xF86XK_AudioRaiseVolume>", spawn "amixer -q set PCM 2+")
