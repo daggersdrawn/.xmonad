@@ -72,10 +72,9 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 
     where myActions = [ ("Xmessage"       , doCenterFloat     )
                       , ("Gmrun"          , doCenterFloat     )
-                      , ("gitg"           , doCenterFloat     )
                       , ("Pidgin"         , doShift " im "    )
                       , ("Skype"          , doShift " im "    )
-                      , ("Chrome"         , doShift " mail "  )
+                      , ("Chrome"         , doShift " org "  )
                       , ("Firefox"        , doShift " www "   )
                       , ("Emacs"          , doShift " emacs " )
                       , ("irssi"          , doShift " irc "   )
