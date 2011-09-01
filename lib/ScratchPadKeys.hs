@@ -30,11 +30,12 @@ module ScratchPadKeys
     -- * Scrachpads
     -- $scratchpads
     , scratchPadList
-    , scratchTerminal
+    , scratchHtop
+    , scratchIrc
     , scratchMixer
-    , scratchMail
     , scratchMusic
-    , scratchTop
+    , scratchTerminal
+    , scratchTorrent
     -- * ManageHooks
     -- $managehooks
     , centerScreen
@@ -130,7 +131,7 @@ spawnScratchpad sp = withWindowSet $ \s -> do
 
 -- | All here-defined scratchpads in a list
 scratchPadList :: [ScratchPad]
-scratchPadList = [scratchMixer, scratchMail, scratchMusic, scratchTop, scratchTerminal]
+scratchPadList = [scratchTerminal, scratchIrc, scratchHtop, scratchMixer, scratchMusic, scratchTorrent]
 
 -- | A terminal along the bottom edge
 scratchTerminal :: ScratchPad
@@ -141,30 +142,44 @@ scratchTerminal = ScratchPad
     , hook     = bottomEdge 0.20
     }
 
--- | ossxmix center screen
-scratchMixer :: ScratchPad
-scratchMixer = ScratchPad
-    { keybind  = "M4-x"
-    , cmd      = spawn "ossxmix"
-    , query    = className =? "Ossxmix"
-    , hook     = centerScreen 0.65
+-- | htop center screen
+scratchHtop :: ScratchPad
+scratchHtop = ScratchPad
+    { keybind  = "M4-s"
+    , cmd     = runInTerminal ["-name", "sp-" ++ "htop", "-e", "htop"]
+    , query   = resource =? ("sp-" ++ "htop")
+    , hook    = centerScreen 0.65
     }
 
--- | mutt center screen
-scratchMail :: ScratchPad
-scratchMail = mkTermSP "mutt" "M4" $ centerScreen 0.65
+-- | irssi center screen
+scratchIrc :: ScratchPad
+scratchIrc = ScratchPad
+    { keybind  = "M4-d"
+    , cmd     = runInTerminal ["-name", "sp-" ++ "irssi", "-e", "irssi"]
+    , query   = resource =? ("sp-" ++ "irssi")
+    , hook    = centerScreen 0.95
+    }
+
+-- | rtorrent center screen
+scratchTorrent :: ScratchPad
+scratchTorrent = ScratchPad
+    { keybind  = "M4-b"
+    , cmd     = runInTerminal ["-name", "sp-" ++ "rtorrent", "-e", "rtorrent"]
+    , query   = resource =? ("sp-" ++ "rtorrent")
+    , hook    = centerScreen 0.65
+    }
+
+-- | alsamixer center screen
+scratchMixer :: ScratchPad
+scratchMixer = mkTermSP "alsamixer" "M4" $ centerScreen 0.65
 
 -- | ncmpcpp center screen
 scratchMusic :: ScratchPad
 scratchMusic = mkTermSP "ncmpcpp" "M4" $ centerScreen 0.65
 
--- | htop center screen
-scratchTop :: ScratchPad
-scratchTop = mkTermSP "htop" "M4" $ centerScreen 0.65
-
 -- | Makes an in-term scratchpad given executable, modifier, and hook.
 --   Uses modifier and the first letter of the executable as the
---   keybind. Your terminal must suppor @-name@ and @-e@ and you must
+--   keybind. Your terminal must support @-name@ and @-e@ and you must
 --   ensure unique keybinds result.
 mkTermSP :: String -- ^ executable
          -> String -- ^ modifier, ex: \"M\", \"M4-C\", etc

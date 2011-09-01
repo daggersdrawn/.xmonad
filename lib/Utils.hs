@@ -106,7 +106,7 @@ myUrgencyHintBgColor = "#ff6565"
 
 --- Workspaces
 rizumuWorkspaces :: [WorkspaceId]
-rizumuWorkspaces = [" sh ", " emacs ", " www ", " im ", " irc ", " mail ", " ongaku ", " stats ", " . "]
+rizumuWorkspaces = [" sh ", " emacs ", " www ", " w3 ", " cal ", " im ", " irc ", " org ", " . "]
 
 -- dzen custom options
 rizumuDzenXft = defaultDzenXft
