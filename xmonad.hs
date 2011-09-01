@@ -74,11 +74,11 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Gmrun"          , doCenterFloat     )
                       , ("gitg"           , doCenterFloat     )
                       , ("Wicd-client.py" , doFloat           )
-                      , ("Pidgin"         , doShift " im "    )
-                      , ("Skype"          , doShift " im "    )
+                      , ("Emacs"          , doShift " emacs " )
                       , ("Firefox"        , doShift " www "   )
                       , ("Chrome"         , doShift " w3 "    )
-                      , ("Emacs"          , doShift " emacs " )
+                      , ("Pidgin"         , doShift " im "    )
+                      , ("Skype"          , doShift " im "    )
                       ]
 --}}}
 
