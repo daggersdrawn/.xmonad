@@ -23,6 +23,7 @@ import XMonad.Hooks.UrgencyHook         (withUrgencyHookC)
 import XMonad.Util.EZConfig             (additionalKeysP)
 
 import XMonad.Layout.IM
+import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders          (smartBorders)
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ResizableTile
@@ -59,7 +60,7 @@ main = do
 
 -- Layouts
 myLayoutHook = avoidStruts $ onWorkspace " 4 im " imLayout $ standardLayouts
-               where standardLayouts = tiled ||| Mirror tiled ||| Full
+               where standardLayouts = tiled ||| Mirror tiled ||| Grid ||| Full
                      imLayout = withIM (2/10) (Role "buddy_list") (standardLayouts)
                      tiled = ResizableTall nmaster delta ratio []
                      nmaster = 1
