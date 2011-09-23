@@ -155,7 +155,7 @@ scratchHtop = ScratchPad
 scratchIrc :: ScratchPad
 scratchIrc = ScratchPad
     { keybind  = "M4-d"
-    , cmd     = runInTerminal ["-name", "sp-" ++ "irssi", "-e", "screen"]
+    , cmd     = runInTerminal ["-name", "sp-" ++ "irssi", "-e", "ssh -t irc screen -raAd"]
     , query   = resource =? ("sp-" ++ "irssi")
     , hook    = centerScreen 0.95
     }
