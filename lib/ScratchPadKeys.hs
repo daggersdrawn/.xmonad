@@ -32,6 +32,7 @@ module ScratchPadKeys
     , scratchPadList
     , scratchHtop
     , scratchIrc
+    , scratchMc
     , scratchMixer
     , scratchMusic
     , scratchTerminal
@@ -131,7 +132,7 @@ spawnScratchpad sp = withWindowSet $ \s -> do
 
 -- | All here-defined scratchpads in a list
 scratchPadList :: [ScratchPad]
-scratchPadList = [scratchTerminal, scratchIrc, scratchHtop, scratchMixer, scratchMusic, scratchTorrent]
+scratchPadList = [scratchTerminal, scratchIrc, scratchHtop, scratchMc, scratchMixer, scratchMusic, scratchTorrent]
 
 -- | A terminal along the bottom edge
 scratchTerminal :: ScratchPad
@@ -157,6 +158,15 @@ scratchIrc = ScratchPad
     { keybind  = "M4-d"
     , cmd     = runInTerminal ["-name", "sp-" ++ "irssi", "-e", "ssh -t irc screen -raAd"]
     , query   = resource =? ("sp-" ++ "irssi")
+    , hook    = centerScreen 0.95
+    }
+
+-- | midnightcommander center screen
+scratchMc :: ScratchPad
+scratchMc = ScratchPad
+    { keybind  = "M4-f"
+    , cmd     = runInTerminal ["-name", "sp-" ++ "mc", "-e", "mc"]
+    , query   = resource =? ("sp-" ++ "mc")
     , hook    = centerScreen 0.95
     }
 

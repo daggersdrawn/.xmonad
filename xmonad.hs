@@ -86,8 +86,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 --{{{ Keybindings http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
 myKeys :: [(String, X())]
 myKeys = [ ("M4-w"                     , spawn "firefox")
-         , ("M4-c"                     , spawn "chromium --app='https://calendar.google.com'")
-         , ("M4-f"                     , spawn "urxvt -e mc")
+         , ("M4-,"                     , spawn "chromium --app='https://calendar.google.com'")
          , ("M4-m"                     , spawn "chromium --app='https://mail.google.com'")
          , ("M4-S-s"                   , spawn "xscreensaver-command --lock")
          , ("M4-<Backspace>"           , spawn "mpc toggle")
