@@ -39,7 +39,7 @@ import Data.List (isInfixOf, isPrefixOf)
 
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
-import XMonad.Hooks.DynamicLog          (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, dzenStrip, pad)
+import XMonad.Hooks.DynamicLog          (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, pad)
 import XMonad.Hooks.ManageDocks         (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers       (isDialog, isFullscreen, doFullFloat, doCenterFloat)
 import XMonad.Hooks.UrgencyHook         (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
