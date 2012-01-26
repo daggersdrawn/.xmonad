@@ -157,8 +157,8 @@ rizumuPP = dzenPP
     -- , ppSep = (wrapFg myHighlightedBgColor "|")
     -- , ppWsSep = ""
     -- , ppUrgent = wrapBg myUrgentWsBgColor
-    , ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
-    , ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
+    -- , ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
+    -- , ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
     , ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor
 
     , ppTitle  = dzenColor myTitleFgColor "" . pad
