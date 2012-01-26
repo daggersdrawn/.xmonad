@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- |
 -- Module      :  Dzen
--- Copyright   :  (c) Patrick Brisbin 2010 
+-- Copyright   :  (c) Patrick Brisbin 2010
 -- License     :  as-is
 --
 -- Maintainer  :  pbrisbin@gmail.com
@@ -13,7 +13,7 @@
 --
 -- I'm not sure if the Percent stuff works on a non-Xinerama setup.
 --
--- You must compile dzen with support for Xinerama if you want to define 
+-- You must compile dzen with support for Xinerama if you want to define
 -- a dzen for a specific screen (it uses the -xs option).
 --
 -------------------------------------------------------------------------------
@@ -40,6 +40,7 @@ module Dzen (
 import Data.List (intercalate)
 import System.IO
 import System.Posix.IO
+import System.Posix.Types (Fd)
 import System.Posix.Process (executeFile, forkProcess, createSession)
 
 import Graphics.X11.Xlib     (openDisplay)
@@ -69,7 +70,7 @@ import Graphics.X11.Xinerama (xineramaQueryScreens, xsi_width)
 -- >     , ppOutput = hPutStrLn h
 -- >     }
 --
--- If you want to feed some other process into a dzen you can use the 
+-- If you want to feed some other process into a dzen you can use the
 -- following:
 --
 -- > spawnToDzen "conky" someDzen
@@ -78,11 +79,11 @@ import Graphics.X11.Xinerama (xineramaQueryScreens, xsi_width)
 --
 
 -- | A data type to fully describe a spawnable dzen bar, take a look at
---   @\/usr\/share\/doc\/dzen2\/README@ to see what input is acceptable. 
---   Options are wrapped in 'Just', so using 'Nothing' will not add that 
---   option to the @dzen2@ executable. @exec@ and @addargs@ can be 
+--   @\/usr\/share\/doc\/dzen2\/README@ to see what input is acceptable.
+--   Options are wrapped in 'Just', so using 'Nothing' will not add that
+--   option to the @dzen2@ executable. @exec@ and @addargs@ can be
 --   empty for the same purpose.
-data DzenConf = DzenConf 
+data DzenConf = DzenConf
     { xPosition :: Maybe DzenWidth -- ^ x position
     , yPosition :: Maybe Int       -- ^ y position
     , screen    :: Maybe ScreenNum -- ^ screen number (0 based, Nothing implies 0)
@@ -111,46 +112,56 @@ instance Show TextAlign where
     show RightAlign = "r"
     show Centered   = "c"
 
--- | Spawn a dzen by configuraion and return its handle, behaves 
+-- | Spawn a dzen by configuration and return its handle, behaves
 --   exactly as spawnPipe but takes a 'DzenConf' as argument.
 spawnDzen :: DzenConf -> IO Handle
 spawnDzen d = do
+    cmd      <- dzen d
     (rd, wr) <- createPipe
-    setFdOption wr CloseOnExec True
-    h <- fdToHandle wr
-    hSetBuffering h LineBuffering
-    _ <- forkProcess $ do
-        _  <- createSession
-        _  <- dupTo rd stdInput
-        dz <- dzen d
-        executeFile "/bin/sh" False ["-c", dz] Nothing
+    h        <- setupDescriptor wr
+
+    shellOut cmd `readingFrom` rd
+
     return h
 
 -- | Spawn a process sending its stdout to the stdin of the dzen
 spawnToDzen :: String -> DzenConf -> IO ()
 spawnToDzen x d = do
+    cmd      <- dzen d
     (rd, wr) <- createPipe
-    setFdOption rd CloseOnExec True
-    setFdOption wr CloseOnExec True
-    hin  <- fdToHandle rd
-    hout <- fdToHandle wr
-    hSetBuffering hin  LineBuffering
-    hSetBuffering hout LineBuffering
 
-    -- the dzen
-    _ <- forkProcess $ do
-        _  <- createSession
-        _  <- dupTo rd stdInput
-        dz <- dzen d
-        executeFile "/bin/sh" False ["-c", dz] Nothing
+    mapM_ setupDescriptor [rd, wr]
 
-    -- the input process
-    _ <- forkProcess $ do
-        _ <- createSession
-        _ <- dupTo wr stdOutput
-        executeFile "/bin/sh" False ["-c", x] Nothing
+    shellOut cmd `readingFrom` rd
+    shellOut x   `writingTo`   wr
 
     return ()
+
+setupDescriptor :: Fd -> IO Handle
+setupDescriptor fd = do
+    setFdOption fd CloseOnExec True
+    h <- fdToHandle fd
+    hSetBuffering h LineBuffering
+    return h
+
+readingFrom :: IO () -> Fd -> IO ()
+readingFrom f rd = tieProcess rd stdInput f
+
+writingTo :: IO () -> Fd -> IO ()
+writingTo f wr = tieProcess wr stdOutput f
+
+tieProcess :: Fd -> Fd -> IO () -> IO ()
+tieProcess fd1 fd2 f = do
+    _ <- forkProcess $ do
+        _  <- createSession
+        _  <- dupTo fd1 fd2
+
+        f
+
+    return ()
+
+shellOut :: String -> IO ()
+shellOut cmd = executeFile "/bin/sh" False ["-c", cmd] Nothing
 
 -- | The full computed dzen command for a 'DzenConf'
 dzen :: DzenConf -> IO String
@@ -185,7 +196,7 @@ dzenArgs d = do
         addExec [] = []
         addExec es = ["-e", quote $ intercalate ";" es]
 
--- | Return the width of ScreenNum s (0 index), return 0 if screen  
+-- | Return the width of ScreenNum s (0 index), return 0 if screen
 --   doesn't exist
 screenWidth :: ScreenNum -> IO Double
 screenWidth s = do
@@ -197,7 +208,7 @@ screenWidth s = do
         Just ss -> if s >= 0 && s < length ss -- prevent bad index
             then fromIntegral . xsi_width $ ss !! s else 0
 
--- | Given a 'DzenWidth', give back the Maybe Int that can be used as an 
+-- | Given a 'DzenWidth', give back the Maybe Int that can be used as an
 --   argument for @-w@ or @-x@.
 mkWidth :: Maybe ScreenNum -> Maybe DzenWidth -> IO (Maybe Int)
 mkWidth Nothing  w                  = mkWidth (Just 0) w
@@ -208,8 +219,8 @@ mkWidth (Just s) (Just (Percent c)) = return . go =<< screenWidth s
         go 0  = Nothing
         go sw = Just . round $ (c/100) * sw
 
--- | A default dzen configuration. Similar colors to default decorations 
---   and prompts in other modules. Added options @-p@ and @-e 
+-- | A default dzen configuration. Similar colors to default decorations
+--   and prompts in other modules. Added options @-p@ and @-e
 --   \'onstart=lower\'@ are useful for dzen-as-statusbar.
 defaultDzen :: DzenConf
 defaultDzen = nothingDzen
