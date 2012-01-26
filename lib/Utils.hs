@@ -5,6 +5,10 @@
 -- Adapted from:
 -- git://github.com/davidbeckingsale/xmonad-config.git
 -- git://github.com/pbrisbin/xmonad-config.git
+--
+-- haddocks: <http://pbrisbin.com/static/docs/haskell/xmonad-config/Utils.html>
+--
+-------------------------------------------------------------------------------
 
 module Utils
     (
@@ -39,14 +43,12 @@ import Data.List (isInfixOf, isPrefixOf)
 
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
-import XMonad.Hooks.DynamicLog          (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, pad)
-import XMonad.Hooks.ManageDocks         (manageDocks, avoidStruts)
-import XMonad.Hooks.ManageHelpers       (isDialog, isFullscreen, doFullFloat, doCenterFloat)
-import XMonad.Hooks.UrgencyHook         (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
-import XMonad.Hooks.SetWMName           (setWMName)
-import XMonad.Layout.IM
-import XMonad.Layout.IndependentScreens
-import XMonad.Layout.LayoutHints        (layoutHints)
+import XMonad.Hooks.DynamicLog      (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, pad)
+import XMonad.Hooks.ManageDocks     (manageDocks, avoidStruts)
+import XMonad.Hooks.ManageHelpers   (isDialog, isFullscreen, doFullFloat, doCenterFloat)
+import XMonad.Hooks.UrgencyHook     (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
+import XMonad.Hooks.SetWMName       (setWMName)
+import XMonad.Layout.LayoutHints    (layoutHints)
 
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
@@ -58,8 +60,8 @@ rizumuStartupHook = do
           spawn "sh ~/.xmonad/autostart.sh"
 
 --{{{ Path variables
-icons = "/home/rizumu/.icons/"
-urgencytone  = "ogg123 -q /home/rizumu/dotfiles/tones/urgency.ogg"
+icons = "~/.icons/"
+urgencytone  = "ogg123 -q ~/.xmonad/data/tones/urgency.ogg"
 --}}}
 
 --{{{ Helper Functions
@@ -106,7 +108,7 @@ myUrgencyHintBgColor = "#ff6565"
 
 --- Workspaces
 rizumuWorkspaces :: [WorkspaceId]
-rizumuWorkspaces = [" sh ", " emacs ", " www ", " w3 ", " cal ", " im ", " irc ", " org ", " . "]
+rizumuWorkspaces = [" sh ", " emacs ", " www ", " w3 ", " cal ", " im ", " org ", " * ", " . "]
 
 -- dzen custom options
 rizumuDzenXft = defaultDzenXft
@@ -146,22 +148,26 @@ rizumuLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
 --
 -- > logHook = dynamicLogWithPP $ rizumuPP { ppOutput = hPutStrLn d }
 --
--- rizumuPP :: PP
+
+rizumuPP :: PP
 rizumuPP = dzenPP
-    { ppSep = (wrapFg myHighlightedBgColor "|")
-    , ppWsSep = ""
+    { ppHidden = hideNSP
+    , ppUrgent = ppUrgent dzenPP . hideNSP
+
+    -- , ppSep = (wrapFg myHighlightedBgColor "|")
+    -- , ppWsSep = ""
+    -- , ppUrgent = wrapBg myUrgentWsBgColor
     , ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
     , ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
-    , ppHidden = wrapFg myHiddenWsFgColor .hideNSP
     , ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor
-    , ppUrgent = wrapBg myUrgentWsBgColor
-    , ppTitle = (\x -> "  " ++ wrapFg myTitleFgColor x)
-    , ppLayout = dzenColor myFgColor"" .
-                (\x -> case x of
-                    "ResizableTall" -> wrapIcon "dzen_bitmaps/tall.xbm"
-                    "Mirror ResizableTall" -> wrapIcon "dzen_bitmaps/mtall.xbm"
-                    "Full" -> wrapIcon "dzen_bitmaps/full.xbm"
-                ) . stripIM
+
+    , ppTitle  = dzenColor myTitleFgColor "" . pad
+    , ppLayout = dzenColor myFgColor"" . pad . \s ->
+        case s of
+            "ResizableTall"          -> wrapIcon "dzen_bitmaps/tall.xbm"
+            "Mirror ResizableTall"   -> wrapIcon "dzen_bitmaps/mtall.xbm"
+            "Full"                   -> wrapIcon "dzen_bitmaps/full.xbm"
+            _                        -> pad s
     }
     where
         wrapFgBg fgColor bgColor content = wrap ("^fg(" ++ fgColor ++ ")^bg(" ++ bgColor ++ ")") "^fg()^bg()" content
@@ -178,7 +184,7 @@ data SpawnSomething = SpawnSomething String deriving (Read, Show)
 instance UrgencyHook SpawnSomething where
     urgencyHook (SpawnSomething s) _ = spawn s
 
--- | Ding! on urgent via ossplay and a sound from Gajim.
+-- | Ding! on urgent via ossplay and homemade sound.
 rizumuUrgencyHook :: SpawnSomething
 rizumuUrgencyHook = SpawnSomething urgencytone
 
@@ -189,23 +195,11 @@ rizumuUrgencyHook = SpawnSomething urgencytone
 rizumuUrgencyConfig :: UrgencyConfig
 rizumuUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }
 
--- Urgency hint configuration
--- myUrgencyHook = withUrgencyHook dzenUrgencyHook
---   { args =
---       [ "-x", "0", "-y", "1180", "-h", "20", "-w", "1920"
---       , "-ta", "c"
---       , "-fg", "" ++ myUrgencyHintFgColor ++ ""
---       , "-bg", "" ++ myUrgencyHintBgColor ++ ""
---       , "-fn", "" ++ myFont ++ ""
---       ]
---   }
-
-
 -- | Spawns yeganesh <http://dmwit.com/yeganesh/>, set the environment
 --   variable @$DMENU_OPTIONS@ to customize dmenu appearance, this is a
 --   good @M-p@ replacement.
 yeganesh :: MonadIO m => m ()
-yeganesh = spawn "exe=`dmenu_path | yeganesh -- $DMENU_OPTIONS` && eval \"exec $exe\""
+yeganesh = spawn "exe=`yeganesh -x -- $DMENU_OPTIONS` && eval \"exec $exe\""
 
 -- | Execute a command in the user-configured terminal.
 --
