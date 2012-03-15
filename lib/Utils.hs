@@ -78,7 +78,7 @@ rizumuTheme = M.fromList [ ("myActiveBorderColor",   myActiveBorderColor)
 myDzenHeight = 18
 
 --Font
-myFont = "xft:inconsolata:size=10:antialias=true"
+myFont = "xft:inconsolata:size=7:antialias=true"
 
 --- Main Colours
 myFgColor = "#DCDCCC"
