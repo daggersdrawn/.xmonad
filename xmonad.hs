@@ -35,7 +35,7 @@ import Data.Map ((!))
 
 main = do
     d <- spawnDzen rizumuDzenXft { width = Just $ Percent 35 }
-    spawnToDzen "conky -c ~/.conky/dzen" conkyBar
+    spawnToDzen "conky -c ~/.xmonad/data/conky/dzen" conkyBar
     xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
         { terminal           = "urxvtcd"
         , normalBorderColor  = rizumuTheme ! "myInactiveBorderColor"

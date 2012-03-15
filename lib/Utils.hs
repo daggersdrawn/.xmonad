@@ -56,7 +56,7 @@ import qualified XMonad.StackSet as W
 rizumuStartupHook :: X ()
 rizumuStartupHook = do
           setWMName  "LG3D"
-          spawn "conky -c ~/.conky/conkyrc"
+          spawn "conky -c ~/.xmonad/data/conky/main"
           spawn "sh ~/.xmonad/autostart.sh"
 
 --{{{ Path variables
