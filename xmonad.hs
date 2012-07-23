@@ -59,7 +59,7 @@ main = do
                                  }
 
 -- Layouts
-myLayoutHook = avoidStruts $ onWorkspace " 4 im " imLayout $ standardLayouts
+myLayoutHook = avoidStruts $ onWorkspace " 9 im " imLayout $ standardLayouts
                where standardLayouts = tiled ||| Mirror tiled ||| Grid ||| Full
                      imLayout = withIM (2/10) (Role "buddy_list") (standardLayouts)
                      tiled = ResizableTall nmaster delta ratio []
@@ -81,14 +81,16 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Pidgin"         , doShift " im "    )
                       , ("Skype"          , doShift " im "    )
                       ]
+
 --}}}
 
 --{{{ Keybindings http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
 myKeys :: [(String, X())]
 myKeys = [ ("M4-w"                     , spawn "firefox")
-         , ("M4-S-w,"                  , spawn "chromium-browser")
-         , ("M4-,"                     , spawn "chromium-browser --app='https://calendar.google.com'")
-         , ("M4-m"                     , spawn "chromium-browser --app='https://mail.google.com'")
+         , ("M4-S-w,"                  , spawn "chromium")
+         , ("M4-,"                     , spawn "chromium --app='https://calendar.google.com'")
+         , ("M4-m"                     , spawn "chromium --app='https://mail.google.com'")
+         , ("M4-."                     , spawn "chromium --app='https://soundcloud.com'")
          , ("M4-S-s"                   , spawn "xscreensaver-command --lock")
          , ("M4-<Backspace>"           , spawn "mpc toggle")
          , ("<xK_Print>"               , spawn "scrot")

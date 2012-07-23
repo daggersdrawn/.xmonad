@@ -43,6 +43,7 @@ import Data.List (isInfixOf, isPrefixOf)
 
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
+import XMonad.Actions.SpawnOn
 import XMonad.Hooks.DynamicLog      (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, pad)
 import XMonad.Hooks.ManageDocks     (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers   (isDialog, isFullscreen, doFullFloat, doCenterFloat)
@@ -55,10 +56,11 @@ import qualified XMonad.StackSet as W
 
 rizumuStartupHook :: X ()
 rizumuStartupHook = do
-          setWMName  "LG3D"
-          spawn "conky -c ~/.xmonad/data/conky/main"
-          spawn "sh ~/.xmonad/autostart.sh"
-
+          setWMName "LG3D"
+          spawnHere "exec conky -c ~/.xmonad/data/conky/main"
+          spawnOn   "www"   "[[ -z \"$(pgrep firefox)\" ]] && exec firefox"
+          spawnOn   "im"    "[[ -z \"$(pgrep pidgin)\" ]] && pidgin"
+          spawnOn   "im"    "[[ -z \"$(pgrep skype)\" ]] && skype"
 --{{{ Path variables
 icons = "~/.icons/"
 urgencytone  = "ogg123 -q ~/.xmonad/data/tones/urgency.ogg"
@@ -109,7 +111,17 @@ myUrgencyHintBgColor = "#ff6565"
 
 --- Workspaces
 rizumuWorkspaces :: [WorkspaceId]
-rizumuWorkspaces = [" sh ", " emacs ", " www ", " w3 ", " cal ", " im ", " org ", " * ", " . "]
+rizumuWorkspaces = [
+  " sh ",
+  " emacs ",
+  " www ",
+  " w3 ",
+  " mail ",
+  " cal ",
+  " org ",
+  " sc ",
+  " im ",
+  " . "]
 
 -- dzen custom options
 rizumuDzenXft = defaultDzenXft
