@@ -43,7 +43,6 @@ import Data.List (isInfixOf, isPrefixOf)
 
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
-import XMonad.Actions.SpawnOn
 import XMonad.Hooks.DynamicLog      (dzenPP, dynamicLogWithPP, PP(..), dzenColor, wrap, shorten, pad)
 import XMonad.Hooks.ManageDocks     (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers   (isDialog, isFullscreen, doFullFloat, doCenterFloat)
@@ -57,7 +56,7 @@ import qualified XMonad.StackSet as W
 rizumuStartupHook :: X ()
 rizumuStartupHook = do
           setWMName "LG3D"
-          spawnHere "exec conky -c ~/.xmonad/data/conky/main"
+          spawn     "exec conky -c ~/.xmonad/data/conky/main"
           spawn     "[[ -z \"$( pgrep firefox )\" ]] && exec firefox"
           spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*mail' )\" ]]                 && exec uzbl-browser --class=gmail      https://mail.google.com/"
           spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*google.com/calendar/' )\" ]] && exec uzbl-browser --class=gcal       https://www.google.com/calendar/"
