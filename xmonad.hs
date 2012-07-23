@@ -77,7 +77,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Wicd-client.py" , doFloat           )
                       , ("Emacs"          , doShift " emacs " )
                       , ("Firefox"        , doShift " www "   )
-                      , ("Chrome"         , doShift " w3 "    )
+                      , ("Chromium"       , doShift " w3 "    )
                       , ("Pidgin"         , doShift " im "    )
                       , ("Skype"          , doShift " im "    )
                       ]
