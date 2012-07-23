@@ -78,6 +78,10 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Emacs"          , doShift " emacs " )
                       , ("Firefox"        , doShift " www "   )
                       , ("Chromium"       , doShift " w3 "    )
+                      , ("org"            , doShift " org "   )
+                      , ("gmail"          , doShift " mail "  )
+                      , ("gcal"           , doShift " cal "   )
+                      , ("soundcloud"     , doShift " sc "    )
                       , ("Pidgin"         , doShift " im "    )
                       , ("Skype"          , doShift " im "    )
                       ]

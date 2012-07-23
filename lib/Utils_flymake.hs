@@ -58,13 +58,9 @@ rizumuStartupHook :: X ()
 rizumuStartupHook = do
           setWMName "LG3D"
           spawnHere "exec conky -c ~/.xmonad/data/conky/main"
-          spawn     "[[ -z \"$( pgrep firefox )\" ]] && exec firefox"
-          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*mail' )\" ]]                 && exec uzbl-browser --class=gmail      https://mail.google.com/"
-          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*google.com/calendar/' )\" ]] && exec uzbl-browser --class=gcal       https://www.google.com/calendar/"
-          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*soundcloud' )\" ]]           && exec uzbl-browser --class=soundcloud https://soundcloud.com"
-          spawn     "[[ -z \"$( pgrep pidgin )\" ]] && exec pidgin"
-          spawn     "[[ -z \"$( pgrep skype )\" ]] && exec skype"
-
+          spawnOn   "www"   "[[ -z \"$(pgrep firefox)\" ]] && exec firefox"
+          spawnOn   "im"    "[[ -z \"$(pgrep pidgin)\" ]] && pidgin"
+          spawnOn   "im"    "[[ -z \"$(pgrep skype)\" ]] && skype"
 --{{{ Path variables
 icons = "~/.icons/"
 urgencytone  = "ogg123 -q ~/.xmonad/data/tones/urgency.ogg"
