@@ -33,9 +33,11 @@ import qualified Data.Map as M
 import Data.Map ((!))
 
 
+
 main = do
-    d <- spawnDzen rizumuDzenXft { width = Just $ Percent 35 }
+    d <- spawnDzen rizumuDzenXft  { width = Just $ Percent 35 }
     spawnToDzen "conky -c ~/.xmonad/data/conky/dzen" conkyBar
+    spawnToDzen "python2 ~/.pymodoro/pymodoro.py | dzen2 -e -p -ta r -fg '#93d44f' -x -120 -y 18 -w 120 -h 12 -bg '#2f2f2f' -fn Inconsolata-7.5" defaultDzenXft
     xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
         { terminal           = "urxvtcd"
         , normalBorderColor  = rizumuTheme ! "myInactiveBorderColor"
