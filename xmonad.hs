@@ -78,7 +78,6 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Emacs"          , doShift " emacs " )
                       , ("Firefox"        , doShift " www "   )
                       , ("Chromium"       , doShift " w3 "    )
-                      , ("org"            , doShift " org "   )
                       , ("gmail"          , doShift " mail "  )
                       , ("gcal"           , doShift " cal "   )
                       , ("soundcloud"     , doShift " sc "    )
@@ -92,9 +91,6 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 myKeys :: [(String, X())]
 myKeys = [ ("M4-w"                     , spawn "firefox")
          , ("M4-S-w,"                  , spawn "chromium")
-         , ("M4-,"                     , spawn "chromium --app='https://calendar.google.com'")
-         , ("M4-m"                     , spawn "chromium --app='https://mail.google.com'")
-         , ("M4-."                     , spawn "chromium --app='https://soundcloud.com'")
          , ("M4-S-s"                   , spawn "xscreensaver-command --lock")
          , ("M4-<Backspace>"           , spawn "mpc toggle")
          , ("<xK_Print>"               , spawn "scrot")

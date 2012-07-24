@@ -121,7 +121,6 @@ rizumuWorkspaces = [
   " w3 ",
   " mail ",
   " cal ",
-  " org ",
   " sc ",
   " im ",
   " . "]

@@ -35,6 +35,7 @@ module ScratchPadKeys
     , scratchMc
     , scratchMixer
     , scratchMusic
+    , scratchOrg
     , scratchTerminal
     , scratchTorrent
     -- * ManageHooks
@@ -132,7 +133,7 @@ spawnScratchpad sp = withWindowSet $ \s -> do
 
 -- | All here-defined scratchpads in a list
 scratchPadList :: [ScratchPad]
-scratchPadList = [scratchTerminal, scratchIrc, scratchHtop, scratchMc, scratchMixer, scratchMusic, scratchTorrent]
+scratchPadList = [scratchTerminal, scratchHtop, scratchIrc, scratchMc, scratchMixer, scratchMusic, scratchOrg, scratchTorrent]
 
 -- | A terminal along the bottom edge
 scratchTerminal :: ScratchPad
@@ -147,36 +148,45 @@ scratchTerminal = ScratchPad
 scratchHtop :: ScratchPad
 scratchHtop = ScratchPad
     { keybind  = "M4-s"
-    , cmd     = runInTerminal ["-name", "sp-" ++ "htop", "-e", "htop"]
-    , query   = resource =? ("sp-" ++ "htop")
-    , hook    = centerScreen 0.65
+    , cmd      = runInTerminal ["-name", "sp-" ++ "htop", "-e", "htop"]
+    , query    = resource =? ("sp-" ++ "htop")
+    , hook     = centerScreen 0.65
     }
 
 -- | irssi center screen
 scratchIrc :: ScratchPad
 scratchIrc = ScratchPad
     { keybind  = "M4-d"
-    , cmd     = runInTerminal ["-name", "sp-" ++ "irssi", "-e", "ssh -t irc screen -raAd"]
-    , query   = resource =? ("sp-" ++ "irssi")
-    , hook    = centerScreen 0.95
+    , cmd      = runInTerminal ["-name", "sp-" ++ "irssi", "-e", "ssh -t irc screen -raAd"]
+    , query    = resource =? ("sp-" ++ "irssi")
+    , hook     = centerScreen 0.95
     }
 
 -- | midnightcommander center screen
 scratchMc :: ScratchPad
 scratchMc = ScratchPad
     { keybind  = "M4-f"
-    , cmd     = runInTerminal ["-name", "sp-" ++ "mc", "-e", "mc"]
-    , query   = resource =? ("sp-" ++ "mc")
-    , hook    = centerScreen 0.95
+    , cmd      = runInTerminal ["-name", "sp-" ++ "mc", "-e", "mc"]
+    , query    = resource =? ("sp-" ++ "mc")
+    , hook     = centerScreen 0.95
     }
 
 -- | rtorrent center screen
 scratchTorrent :: ScratchPad
 scratchTorrent = ScratchPad
     { keybind  = "M4-b"
-    , cmd     = runInTerminal ["-name", "sp-" ++ "rtorrent", "-e", "rtorrent"]
-    , query   = resource =? ("sp-" ++ "rtorrent")
-    , hook    = centerScreen 0.65
+    , cmd      = runInTerminal ["-name", "sp-" ++ "rtorrent", "-e", "rtorrent"]
+    , query    = resource =? ("sp-" ++ "rtorrent")
+    , hook     = centerScreen 0.65
+    }
+
+-- | org-mode center screen
+scratchOrg :: ScratchPad
+scratchOrg = ScratchPad
+    { keybind  = "M4-o"
+    , cmd      = runInTerminal ["-name", "sp-" ++ "org", "-e", "emacs -nw --title org --name org ~/org/"]
+    , query    = resource =? ("sp-" ++ "org")
+    , hook     = centerScreen 0.95
     }
 
 -- | alsamixer center screen
