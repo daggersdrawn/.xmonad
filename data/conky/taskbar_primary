@@ -1,0 +1,29 @@
+# conkyrc file for dzen
+###
+
+background no
+out_to_console yes
+out_to_x no
+override_utf8_locale yes
+update_interval 1
+total_run_times 0
+
+TEXT
+^fg(\#93d44f)++ \
+\
+^fg() Cpu: ^fg(\#909090)${cpu}% \
+^fg() Mem: ^fg(\#909090)${memperc}% \
+^fg() Net: ^fg(\#909090)${downspeedf eth0} / ${upspeedf eth0}^fg() \
+^fg() Vol: ^fg(\#909090)${exec amixer sget 'PCM',0 | grep Left: | sed 's/^[^[]*\[/[/g' | sed 's/\[[^%]*dB\] //g' | sed 's/^\[.*off\]/[-]/g' | sed 's/ \[on\]//g'}^fg() \
+\
+^fg(\#93d44f)++ \
+\
+^fg() ^fg(\#909090)${execi 300 $HOME/bin/weather "EUR|ES|SP013|Madrid"} \
+\
+^fg(\#93d44f)++ \
+\
+^fg(\#ff6565) ${exec python2 $HOME/bin/pymodoro} \
+\
+^fg(\#93d44f)++\
+\
+^fg() ${time %a %b %d %H:%M} \
