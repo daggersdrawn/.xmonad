@@ -21,6 +21,7 @@ import XMonad.Hooks.ManageDocks         (avoidStruts, manageDocks, ToggleStruts(
 import XMonad.Hooks.ManageHelpers       (doCenterFloat)
 import XMonad.Hooks.UrgencyHook         (withUrgencyHookC)
 import XMonad.Util.EZConfig             (additionalKeysP)
+import XMonad.Util.Run                  (spawnPipe)
 
 import XMonad.Layout.IM
 import XMonad.Layout.Grid
@@ -33,11 +34,12 @@ import qualified Data.Map as M
 import Data.Map ((!))
 
 
-
+main :: IO ()
 main = do
-    d <- spawnDzen rizumuDzenXft  { width = Just $ Percent 35 }
-    spawnToDzen "conky -c ~/.xmonad/data/conky/dzen" conkyBar
-    spawnToDzen "python2 ~/.pymodoro/pymodoro.py | dzen2 -e -p -ta r -fg '#93d44f' -x -120 -y 18 -w 120 -h 12 -bg '#2f2f2f' -fn Inconsolata-7.5" defaultDzenXft
+    taskbarPrimaryLeft  <- spawnDzen dzenPrimaryLeft
+    taskbarPrimaryRight <- spawnToDzen "conky -c ~/.xmonad/data/conky/taskbar_primary"  dzenPrimaryRight
+    taskbarDivider      <- spawnToDzen " " dzenDivider { yPosition = Just $ 18 }
+    taskbarSecondary    <- spawnToDzen "conky -c ~/.xmonad/data/conky/taskbar_secondary" dzenSecondary
     xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
         { terminal           = "urxvtcd"
         , normalBorderColor  = rizumuTheme ! "myInactiveBorderColor"
@@ -45,7 +47,7 @@ main = do
         , borderWidth        = read $ rizumuTheme ! "myBorderWidth"
         , layoutHook         = smartBorders $ avoidStruts $ myLayoutHook
         , manageHook         = rizumuManageHook <+> myManageHook
-        , logHook            = dynamicLogWithPP $ rizumuPP { ppOutput = hPutStrLn d }
+        , logHook            = dynamicLogWithPP $ rizumuPP { ppOutput = hPutStrLn taskbarPrimaryLeft }
         , modMask            = mod4Mask
         , mouseBindings      = myMouseBindings
         , workspaces         = rizumuWorkspaces
@@ -54,10 +56,27 @@ main = do
         } `additionalKeysP`  myKeys
 
     where
-        conkyBar :: DzenConf
-        conkyBar = rizumuDzenXft { alignment  = Just RightAlign
-                                 , xPosition  = Just $ Percent 31.1
-                                 , width      = Just $ Percent 65
+        dzenPrimaryLeft :: DzenConf
+        dzenPrimaryLeft = rizumuDzenXft { width = Just $ Percent 65 }
+
+        dzenPrimaryRight :: DzenConf
+        dzenPrimaryRight = rizumuDzenXft { alignment  = Just RightAlign
+                                         , xPosition  = Just $ Percent 61.1
+                                         , width      = Just $ Percent 35
+                                         }
+
+        dzenDivider :: DzenConf
+        dzenDivider = rizumuDzenXft { alignment  = Just Centered
+                                       , width      = Just $ Percent 100
+                                       , height     = Just $ 1
+                                       , bgColor    = Just $ "#93d44f"
+                                       }
+
+        dzenSecondary :: DzenConf
+        dzenSecondary = rizumuDzenXft { alignment  = Just Centered
+                                 , yPosition  = Just $ 19
+                                 , width      = Just $ Percent 100
+                                 , bgColor    = Just $ "#333333"
                                  }
 
 -- Layouts
@@ -95,6 +114,7 @@ myKeys = [ ("M4-w"                     , spawn "firefox")
          , ("M4-S-w,"                  , spawn "chromium")
          , ("M4-S-s"                   , spawn "xscreensaver-command --lock")
          , ("M4-<Backspace>"           , spawn "mpc toggle")
+         , ("M4-<xK_Print>"            , spawn "sleep 0.2; scrot -s")
          , ("<xK_Print>"               , spawn "scrot")
          , ("<xF86XK_AudioMute>"       , spawn "amixer -q set PCM toggle")
          , ("<xF86XK_AudioRaiseVolume>", spawn "amixer -q set PCM 2+")
