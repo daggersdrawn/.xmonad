@@ -8,6 +8,7 @@
 
 import XMonad
 
+import Data.Ratio
 import System.IO                        (hPutStrLn)
 
 -- <http://pbrisbin.com/xmonad/docs/Utils.html>
@@ -23,11 +24,14 @@ import XMonad.Hooks.UrgencyHook         (withUrgencyHookC)
 import XMonad.Util.EZConfig             (additionalKeysP)
 import XMonad.Util.Run                  (spawnPipe)
 
+import XMonad.Layout.Circle
+import XMonad.Layout.Dishes
 import XMonad.Layout.IM
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders          (smartBorders)
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.Spiral
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
@@ -74,14 +78,14 @@ main = do
 
         dzenSecondary :: DzenConf
         dzenSecondary = rizumuDzenXft { alignment  = Just Centered
-                                 , yPosition  = Just $ 19
-                                 , width      = Just $ Percent 100
-                                 , bgColor    = Just $ "#333333"
-                                 }
+                                      , yPosition  = Just $ 19
+                                      , width      = Just $ Percent 100
+                                      , bgColor    = Just $ "#333333"
+                                      }
 
 -- Layouts
 myLayoutHook = avoidStruts $ onWorkspace " 9 im " imLayout $ standardLayouts
-               where standardLayouts = tiled ||| Mirror tiled ||| Grid ||| Full
+               where standardLayouts = tiled ||| Mirror tiled ||| Grid ||| Circle ||| Dishes 2 (1/6) ||| spiral ( 1 % 1) ||| Full
                      imLayout = withIM (2/10) (Role "buddy_list") (standardLayouts)
                      tiled = ResizableTall nmaster delta ratio []
                      nmaster = 1

@@ -183,6 +183,9 @@ rizumuPP = dzenPP
             "ResizableTall"          -> wrapIcon "dzen_bitmaps/tall.xbm"
             "Mirror ResizableTall"   -> wrapIcon "dzen_bitmaps/mtall.xbm"
             "Full"                   -> wrapIcon "dzen_bitmaps/full.xbm"
+            "Circle"                 -> wrapIcon "dzen_bitmaps/ball.xbm"
+            "Dishes"                 -> wrapIcon "dzen_bitmaps/ball.xbm"
+            "Spiral"                 -> wrapIcon "dzen_bitmaps/ball.xbm"
             _                        -> pad s
     }
     where
