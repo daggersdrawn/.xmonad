@@ -2,6 +2,7 @@
 PERCENT=`acpi -b | sed 's/\([^:]*\): \([^,]*\), \([0-9]*\)%.*/\3/'`
 STATUS=`acpi -b | sed 's/\([^:]*\): \([^,]*\), \([0-9]*\)%.*/\2/'`
 
+
 if [ $STATUS == "Charging" ]; then
   if [ $PERCENT -ge 99 ]; then
     echo -n "ac: max"
@@ -9,7 +10,9 @@ if [ $STATUS == "Charging" ]; then
     echo -n "ac: $PERCENT%"
   fi
 else
-  echo -n "bat: $PERCENT%"
+  if [ ! $STATUS contains "No support" ]; then
+    echo -n "bat: $PERCENT%"
+  fi
 fi
 
 echo ""
