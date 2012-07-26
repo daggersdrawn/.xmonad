@@ -31,7 +31,9 @@ import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders          (smartBorders)
 import XMonad.Layout.PerWorkspace
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.SimpleFloat
 import XMonad.Layout.Spiral
+import XMonad.Layout.ThreeColumns
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
@@ -84,30 +86,53 @@ main = do
                                       }
 
 -- Layouts
-myLayoutHook = avoidStruts $ onWorkspace " 9 im " imLayout $ standardLayouts
-               where standardLayouts = tiled ||| Mirror tiled ||| Grid ||| Circle ||| Dishes 2 (1/6) ||| spiral ( 1 % 1) ||| Full
-                     imLayout = withIM (2/10) (Role "buddy_list") (standardLayouts)
-                     tiled = ResizableTall nmaster delta ratio []
-                     nmaster = 1
-                     delta = 0.03
-                     ratio = 0.5
+myLayoutHook = avoidStruts $
+               onWorkspace " 𐌎 "      gridLayout     $
+               onWorkspace " Ϣ "     spiralLayout   $
+               onWorkspace " ⎇ "    fullLayout     $
+               onWorkspace " Φ "     fullLayout     $
+               onWorkspace " Ψ "      fullLayout     $
+               onWorkspace " ⇄ "      threecolLayout $
+               onWorkspace " ζ "       floatLayout    $
+               standardLayouts
+               where tiled           = ResizableTall nmaster delta ratio []
+                     gridLayout      = avoidStruts $ Grid
+                     spiralLayout    = spiral ( 1 % 1)
+                     threecolLayout  = ThreeCol 1 (3/100) (1/2)
+                     floatLayout     = simpleFloat
+                     fullLayout      = Full
+                     nmaster         = 1
+                     delta           = 0.03
+                     ratio           = 0.5
+                     standardLayouts =     tiled
+                                       ||| Mirror tiled
+                                       ||| gridLayout
+                                       ||| threecolLayout
+                                       ||| Circle
+                                       ||| Dishes 2 (1/6)
+                                       ||| spiralLayout
+                                       ||| fullLayout
+                                       ||| floatLayout
 
 --{{{ Hook for managing windows
 myManageHook :: ManageHook
 myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageScratchPads scratchPadList
 
-    where myActions = [ ("Xmessage"       , doCenterFloat     )
-                      , ("Gmrun"          , doCenterFloat     )
-                      , ("gitg"           , doCenterFloat     )
-                      , ("Wicd-client.py" , doFloat           )
-                      , ("Emacs"          , doShift " emacs " )
-                      , ("Firefox"        , doShift " www "   )
-                      , ("Chromium"       , doShift " w3 "    )
-                      , ("gmail"          , doShift " mail "  )
-                      , ("gcal"           , doShift " cal "   )
-                      , ("soundcloud"     , doShift " sc "    )
-                      , ("Pidgin"         , doShift " im "    )
-                      , ("Skype"          , doShift " im "    )
+    where myActions = [ ("Xmessage"            , doCenterFloat     )
+                      , ("Gmrun"               , doCenterFloat     )
+                      , ("gitg"                , doCenterFloat     )
+                      , ("Firefox Preferences" , doFloat           )
+                      , ("Saved Passwords"     , doFloat           )
+                      , ("Emacs"               , doShift " λ " )
+                      , ("Firefox"             , doShift " Ϣ "   )
+                      , ("Chromium"            , doShift " Ϣ "   )
+                      , ("Uzbl"                , doShift " Ϣ "   )
+                      , ("Uzbl-core"           , doShift " Ϣ "   )
+                      , ("gmail"               , doShift " ⎇ "  )
+                      , ("gcal"                , doShift " Φ "   )
+                      , ("soundcloud"          , doShift " Ψ "    )
+                      , ("Pidgin"              , doShift " ζ "    )
+                      , ("Skype"               , doShift " ζ "    )
                       ]
 
 --}}}

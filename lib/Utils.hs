@@ -113,18 +113,18 @@ myUrgencyHintBgColor = "#ff6565"
 
 --- }}}
 
---- Workspaces
+--- Workspaces https://en.wikipedia.org/wiki/List_of_Unicode_characters
 rizumuWorkspaces :: [WorkspaceId]
 rizumuWorkspaces = [
-  " sh ",
-  " emacs ",
-  " www ",
-  " w3 ",
-  " mail ",
-  " cal ",
-  " sc ",
-  " im ",
-  " . "]
+  " 𐌎 ",  -- shell (grid)
+  " λ ",  -- emacs (lambda)
+  " Ϣ ",  -- www (web)
+  " ⎇ ",  -- mail (send)
+  " Φ ",  -- cal (500 years)
+  " Ψ ",  -- music (wave)
+  " ⇄ ",  -- im (connectivity)
+  " ζ ",  -- float (fluid)
+  " ꝏ "]  -- scratch (infinity)
 
 -- dzen custom options
 rizumuDzenXft = defaultDzenXft
