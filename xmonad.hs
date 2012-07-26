@@ -131,8 +131,8 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("gmail"               , doShift " ⎇ "  )
                       , ("gcal"                , doShift " Φ "   )
                       , ("soundcloud"          , doShift " Ψ "    )
-                      , ("Pidgin"              , doShift " ζ "    )
-                      , ("Skype"               , doShift " ζ "    )
+                      , ("Pidgin"              , doShift " ⇄ "    )
+                      , ("Skype"               , doShift " ⇄ "    )
                       ]
 
 --}}}
