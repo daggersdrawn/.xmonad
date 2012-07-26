@@ -61,12 +61,12 @@ main = do
 
     where
         dzenPrimaryLeft :: DzenConf
-        dzenPrimaryLeft = rizumuDzenXft { width = Just $ Percent 65 }
+        dzenPrimaryLeft = rizumuDzenXft { width = Just $ Percent 35 }
 
         dzenPrimaryRight :: DzenConf
         dzenPrimaryRight = rizumuDzenXft { alignment  = Just RightAlign
-                                         , xPosition  = Just $ Percent 61.1
-                                         , width      = Just $ Percent 35
+                                         , xPosition  = Just $ Percent 35
+                                         , width      = Just $ Percent 55
                                          }
 
         dzenDivider :: DzenConf
