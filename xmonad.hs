@@ -85,9 +85,10 @@ main = do
                                       , bgColor    = Just $ "#333333"
                                       }
 
+
 -- Layouts
 myLayoutHook = avoidStruts $
-               onWorkspace " 𐌎 "      gridLayout     $
+               onWorkspace " 𐌎 "      shLayouts     $
                onWorkspace " Ϣ "     spiralLayout   $
                onWorkspace " ⎇ "    fullLayout     $
                onWorkspace " Φ "     fullLayout     $
@@ -104,6 +105,10 @@ myLayoutHook = avoidStruts $
                      nmaster         = 1
                      delta           = 0.03
                      ratio           = 0.5
+                     shLayouts       =     gridLayout
+                                       ||| tiled
+                                       ||| Mirror tiled
+                                       ||| threecolLayout
                      standardLayouts =     tiled
                                        ||| Mirror tiled
                                        ||| gridLayout
@@ -139,24 +144,24 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 
 --{{{ Keybindings http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
 myKeys :: [(String, X())]
-myKeys = [ ("M4-w"                     , spawn "firefox")
-         , ("M4-S-w,"                  , spawn "chromium")
-         , ("M4-S-s"                   , spawn "xscreensaver-command --lock")
-         , ("M4-<Backspace>"           , spawn "mpc toggle")
-         , ("M4-<xK_Print>"            , spawn "sleep 0.2; scrot -s")
-         , ("<xK_Print>"               , spawn "scrot")
-         , ("<xF86XK_AudioMute>"       , spawn "amixer -q set PCM toggle")
-         , ("<xF86XK_AudioRaiseVolume>", spawn "amixer -q set PCM 2+")
-         , ("<xF86XK_AudioLowerVolume>", spawn "amixer -q set PCM 2-")
-         , ("<xF86XK_AudioPlay>"       , spawn "exaile -t")
-         , ("<xF86XK_AudioStop>"       , spawn "exaile -s")
-         , ("<xF86XK_AudioNext>"       , spawn "exaile -n")
-         , ("<xF86XK_AudioPrev>"       , spawn "exaile -p")
-         , ("M4-S-n"                   , spawn "touch ~/.pomodoro_session")
-         , ("M4-y"                     , sendMessage ToggleStruts)
-         , ("M4-u"                     , sendMessage MirrorShrink)
-         , ("M4-i"                     , sendMessage MirrorExpand)
-         , ("M-q"                      , cleanStart) -- restart xmonad
+myKeys = [ ("M-w"                       , spawn "uzbl-tabbed")
+         , ("M-S-w,"                    , spawn "firefox")
+         , ("M-S-s"                     , spawn "xscreensaver-command --lock")
+         , ("M-<Backspace>"             , spawn "mpc toggle")
+         , ("M-<xK_Print>"              , spawn "sleep 0.2; scrot -s")
+         , ("<xK_Print>"                , spawn "scrot")
+         , ("<xF86XK_AudioMute>"        , spawn "amixer -q set PCM toggle")
+         , ("<xF86XK_AudioRaiseVolume>" , spawn "amixer -q set PCM 2+")
+         , ("<xF86XK_AudioLowerVolume>" , spawn "amixer -q set PCM 2-")
+         , ("<xF86XK_AudioPlay>"        , spawn "exaile -t")
+         , ("<xF86XK_AudioStop>"        , spawn "exaile -s")
+         , ("<xF86XK_AudioNext>"        , spawn "exaile -n")
+         , ("<xF86XK_AudioPrev>"        , spawn "exaile -p")
+         , ("M-S-n"                     , spawn "touch ~/.pomodoro_session")
+         , ("M-y"                       , sendMessage ToggleStruts)
+         , ("M-u"                       , sendMessage MirrorShrink)
+         , ("M-i"                       , sendMessage MirrorExpand)
+         , ("M-q"                       , cleanStart) -- restart xmonad
          ] ++ scratchPadKeys scratchPadList
 --}}}
 

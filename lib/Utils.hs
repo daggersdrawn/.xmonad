@@ -59,9 +59,9 @@ rizumuStartupHook = do
           spawn     "exec conky -c ~/.xmonad/data/conky/main"
           -- spawn     "exec urxvtcd"
           spawn     "[[ -z \"$( pgrep firefox )\" ]] && exec firefox"
-          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*mail' )\" ]]                 && exec uzbl-browser --class=gmail      https://mail.google.com/"
-          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*google.com/calendar/' )\" ]] && exec uzbl-browser --class=gcal       https://www.google.com/calendar/"
-          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*soundcloud' )\" ]]           && exec uzbl-browser --class=soundcloud https://soundcloud.com"
+          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*mail' )\" ]]                 && exec uzbl-tabbed --class=gmail      https://mail.google.com/"
+          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*google.com/calendar/' )\" ]] && exec uzbl-tabbed --class=gcal       https://www.google.com/calendar/"
+          spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*soundcloud' )\" ]]           && exec uzbl-tabbed --class=soundcloud https://soundcloud.com"
           spawn     "[[ -z \"$( pgrep pidgin )\" ]] && exec pidgin"
           spawn     "[[ -z \"$( pgrep skype )\" ]] && exec skype"
 
