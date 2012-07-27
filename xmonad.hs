@@ -63,7 +63,7 @@ main = do
 
     where
         dzenPrimaryLeft :: DzenConf
-        dzenPrimaryLeft = rizumuDzenXft { width = Just $ Percent 35 }
+        dzenPrimaryLeft = rizumuDzenXft  { width = Just $ Percent 35 }
 
         dzenPrimaryRight :: DzenConf
         dzenPrimaryRight = rizumuDzenXft { alignment  = Just RightAlign
@@ -72,23 +72,24 @@ main = do
                                          }
 
         dzenDivider :: DzenConf
-        dzenDivider = rizumuDzenXft { alignment  = Just Centered
-                                       , width      = Just $ Percent 100
-                                       , height     = Just $ 1
-                                       , bgColor    = Just $ "#93d44f"
-                                       }
+        dzenDivider = rizumuDzenXft      { alignment  = Just Centered
+                                         , width      = Just $ Percent 100
+                                         , height     = Just $ 1
+                                         , bgColor    = Just $ "#93d44f"
+                                         }
 
         dzenSecondary :: DzenConf
-        dzenSecondary = rizumuDzenXft { alignment  = Just Centered
-                                      , yPosition  = Just $ 19
-                                      , width      = Just $ Percent 100
-                                      , bgColor    = Just $ "#333333"
-                                      }
+        dzenSecondary = rizumuDzenXft    { alignment  = Just Centered
+                                         , yPosition  = Just $ 19
+                                         , width      = Just $ Percent 100
+                                         , bgColor    = Just $ "#333333"
+                                         }
 
 
 -- Layouts
 myLayoutHook = avoidStruts $
                onWorkspace " 𐌎 "      shLayouts     $
+               onWorkspace " λ "     spiralLayout   $
                onWorkspace " Ϣ "     spiralLayout   $
                onWorkspace " ⎇ "    fullLayout     $
                onWorkspace " Φ "     fullLayout     $
