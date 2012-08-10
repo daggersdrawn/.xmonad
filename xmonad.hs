@@ -106,9 +106,9 @@ myLayoutHook = avoidStruts $
                      nmaster         = 1
                      delta           = 0.03
                      ratio           = 0.5
-                     shLayouts       =     gridLayout
-                                       ||| tiled
+                     shLayouts       =     tiled
                                        ||| Mirror tiled
+                                       ||| gridLayout
                                        ||| threecolLayout
                      standardLayouts =     tiled
                                        ||| Mirror tiled
