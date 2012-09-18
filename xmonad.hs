@@ -89,11 +89,11 @@ main = do
 -- Layouts
 myLayoutHook = avoidStruts $
                onWorkspace " 𐌎 "      shLayouts     $
-               onWorkspace " λ "     spiralLayout   $
-               onWorkspace " Ϣ "     spiralLayout   $
-               onWorkspace " ⎇ "    fullLayout     $
-               onWorkspace " Φ "     fullLayout     $
-               onWorkspace " Ψ "      fullLayout     $
+               onWorkspace " λ "     fullLayout   $
+               onWorkspace " Ϣ "     webLayouts   $
+               onWorkspace " ⎇ "    webLayouts     $
+               onWorkspace " Φ "     webLayouts     $
+               onWorkspace " Ψ "      webLayouts     $
                onWorkspace " ⇄ "      threecolLayout $
                onWorkspace " ζ "       floatLayout    $
                standardLayouts
@@ -110,6 +110,10 @@ myLayoutHook = avoidStruts $
                                        ||| Mirror tiled
                                        ||| gridLayout
                                        ||| threecolLayout
+                     webLayouts      =     spiralLayout
+                                       ||| fullLayout
+                                       ||| tiled
+                                       ||| Mirror tiled
                      standardLayouts =     tiled
                                        ||| Mirror tiled
                                        ||| gridLayout
