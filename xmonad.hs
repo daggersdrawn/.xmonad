@@ -89,7 +89,7 @@ main = do
 -- Layouts
 myLayoutHook = avoidStruts $
                onWorkspace " 𐌎 "      shLayouts     $
-               onWorkspace " λ "     fullLayout   $
+               onWorkspace " λ "     spiralLayout   $
                onWorkspace " Ϣ "     webLayouts   $
                onWorkspace " ⎇ "    webLayouts     $
                onWorkspace " Φ "     webLayouts     $
@@ -149,7 +149,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 
 --{{{ Keybindings http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
 myKeys :: [(String, X())]
-myKeys = [ ("M-w"                       , spawn "uzbl-tabbed")
+myKeys = [ ("M-w"                       , spawn "firefox")
          , ("M-S-w,"                    , spawn "firefox")
          , ("M-S-s"                     , spawn "xscreensaver-command --lock")
          , ("M-<Backspace>"             , spawn "mpc toggle")
