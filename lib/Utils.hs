@@ -14,18 +14,17 @@
 module Utils
     (
     -- * Config entries
-      rizumuWorkspaces
-    , rizumuDzenXft
-    , rizumuManageHook
-    , rizumuLayout
-    , rizumuPP
-    , rizumuTheme
-    , rizumuStartupHook
+      myWorkspaces
+    , myDzenXft
+    , myLayout
+    , myPP
+    , myTheme
+    , myStartupHook
 
     -- * Urgency
     , SpawnSomething(..)
-    , rizumuUrgencyHook
-    , rizumuUrgencyConfig
+    , myUrgencyHook
+    , myUrgencyConfig
 
     -- * Utilities
     , matchAny
@@ -45,8 +44,7 @@ import Data.List (isInfixOf, isPrefixOf, elemIndex)
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
 import XMonad.Hooks.DynamicLog      (dzenPP, dynamicLogWithPP, PP(..), dzenColor, dzenEscape, wrap, shorten, pad)
-import XMonad.Hooks.ManageDocks     (manageDocks, avoidStruts)
-import XMonad.Hooks.ManageHelpers   (isDialog, isFullscreen, doFullFloat, doCenterFloat)
+import XMonad.Hooks.ManageDocks     (avoidStruts)
 import XMonad.Hooks.UrgencyHook     (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
 import XMonad.Hooks.SetWMName       (setWMName)
 import XMonad.Layout.LayoutHints    (layoutHints)
@@ -54,8 +52,8 @@ import XMonad.Layout.LayoutHints    (layoutHints)
 import qualified Data.Map as M
 import qualified XMonad.StackSet as W
 
-rizumuStartupHook :: X ()
-rizumuStartupHook = do
+myStartupHook :: X ()
+myStartupHook = do
           setWMName "LG3D"
           spawn     "exec conky -c ~/.xmonad/data/conky/main"
           spawn     "exec urxvtcd"
@@ -78,7 +76,7 @@ wrapIcon icon = "^p(5)^i(" ++ icons ++ icon ++ ")^p(5)"
 
 --{{{ Theme
 -- Dzen defaults
-rizumuTheme = M.fromList [ ("myActiveBorderColor",   myActiveBorderColor)
+myTheme = M.fromList [ ("myActiveBorderColor",   myActiveBorderColor)
                          , ("myInactiveBorderColor", myInactiveBorderColor)
                          , ("myBorderWidth",         show myBorderWidth)
                          ]
@@ -128,8 +126,8 @@ myUrgencyHintBgColor = "#ff6565"
 --- }}}
 
 --- Workspaces https://en.wikipedia.org/wiki/List_of_Unicode_characters
-rizumuWorkspaces :: [WorkspaceId]
-rizumuWorkspaces = [
+myWorkspaces :: [WorkspaceId]
+myWorkspaces = [
   " 𐌎 ",  -- shell (grid)
   " λ ",  -- emacs (lambda)
   " Ϣ ",  -- www (web)
@@ -141,21 +139,12 @@ rizumuWorkspaces = [
   " ꝏ "]  -- scratch (infinity)
 
 -- dzen custom options
-rizumuDzenXft = defaultDzenXft
+myDzenXft = defaultDzenXft
     { font    = Just myFont
     , height  = Just myDzenHeight
     , fgColor = Just myFgColor
     , bgColor = Just myBgColor
     }
-
--- | Default plus docks, dialogs and smarter full screening.
-rizumuManageHook :: ManageHook
-rizumuManageHook = composeAll $ concat
-    [ [ manageDocks                                      ]
-    , [ manageHook defaultConfig                         ]
-    , [ isDialog     --> doCenterFloat                   ]
-    , [ isFullscreen --> doF W.focusDown <+> doFullFloat ]
-    ]
 
 -- | Match a string against any one of a window's class, title, name or
 --   role.
@@ -171,16 +160,16 @@ role :: Query String
 role = stringProperty "WM_ROLE"
 
 -- Default plus hinting and avoidStruts.
-rizumuLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
+myLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
 
 -- | @dzenPP@, zenburnish title/layout colors,
 --   hiding of the NSP workspace and a nice @ppLayout@
 --
--- > logHook = dynamicLogWithPP $ rizumuPP { ppOutput = hPutStrLn d }
+-- > logHook = dynamicLogWithPP $ myPP { ppOutput = hPutStrLn d }
 --
 
-rizumuPP :: PP
-rizumuPP = dzenPP
+myPP :: PP
+myPP = dzenPP
     { ppCurrent         = dzenColor colorBlue      myBgColor . pad
     , ppVisible         = dzenColor colorGray      myBgColor . pad . wrapClickWorkSpace . (\a -> (a,a))
     , ppUrgent          = dzenColor colorGreen     myBgColor . pad . wrapClickWorkSpace . (\a -> (a,a))
@@ -253,7 +242,7 @@ rizumuPP = dzenPP
             where
                 wsIdxToString Nothing = "1"
                 wsIdxToString (Just n) = show (n+1)
-                index = wsIdxToString (elemIndex idx rizumuWorkspaces)
+                index = wsIdxToString (elemIndex idx myWorkspaces)
                 xdo key = "xdotool key super+" ++ key
 
 
@@ -268,15 +257,15 @@ instance UrgencyHook SpawnSomething where
     urgencyHook (SpawnSomething s) _ = spawn s
 
 -- | Ding! on urgent via ossplay and homemade sound.
-rizumuUrgencyHook :: SpawnSomething
-rizumuUrgencyHook = SpawnSomething urgencytone
+myUrgencyHook :: SpawnSomething
+myUrgencyHook = SpawnSomething urgencytone
 
 -- | Default but still show urgent on visible non-focused workspace.
 --
--- > xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
+-- > xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ defaultConfig
 --
-rizumuUrgencyConfig :: UrgencyConfig
-rizumuUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }
+myUrgencyConfig :: UrgencyConfig
+myUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }
 
 -- | Spawns yeganesh <http://dmwit.com/yeganesh/>, set the environment
 --   variable @$DMENU_OPTIONS@ to customize dmenu appearance, this is a

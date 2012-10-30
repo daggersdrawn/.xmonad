@@ -5,6 +5,9 @@
 -- Adapted from:
 -- git://github.com/davidbeckingsale/xmonad-config.git
 -- git://github.com/pbrisbin/xmonad-config.git
+-- https://github.com/capdevc/nnoell-xmonad
+--
+-------------------------------------------------------------------------------
 
 import XMonad
 
@@ -19,7 +22,7 @@ import ScratchPadKeys                   (scratchPadList, manageScratchPads, scra
 
 import XMonad.Hooks.DynamicLog          (dynamicLogWithPP, PP(..))
 import XMonad.Hooks.ManageDocks         (avoidStruts, manageDocks, ToggleStruts(..) )
-import XMonad.Hooks.ManageHelpers       (doCenterFloat)
+import XMonad.Hooks.ManageHelpers       (isDialog, isFullscreen, doFullFloat, doCenterFloat)
 import XMonad.Hooks.UrgencyHook         (withUrgencyHookC)
 import XMonad.Util.EZConfig             (additionalKeysP)
 import XMonad.Util.Run                  (spawnPipe)
@@ -46,40 +49,40 @@ main = do
     taskbarPrimaryRight <- spawnToDzen "conky -c ~/.xmonad/data/conky/taskbar_primary"  dzenPrimaryRight
     taskbarDivider      <- spawnToDzen " " dzenDivider { yPosition = Just $ 18 }
     taskbarSecondary    <- spawnToDzen "conky -c ~/.xmonad/data/conky/taskbar_secondary" dzenSecondary
-    xmonad $ withUrgencyHookC rizumuUrgencyHook rizumuUrgencyConfig $ defaultConfig
+    xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ defaultConfig
         { terminal           = "urxvtcd"
-        , normalBorderColor  = rizumuTheme ! "myInactiveBorderColor"
-        , focusedBorderColor = rizumuTheme ! "myActiveBorderColor"
-        , borderWidth        = read $ rizumuTheme ! "myBorderWidth"
+        , normalBorderColor  = myTheme ! "myInactiveBorderColor"
+        , focusedBorderColor = myTheme ! "myActiveBorderColor"
+        , borderWidth        = read $ myTheme ! "myBorderWidth"
         , layoutHook         = smartBorders $ avoidStruts $ myLayoutHook
-        , manageHook         = rizumuManageHook <+> myManageHook
-        , logHook            = dynamicLogWithPP $ rizumuPP { ppOutput = hPutStrLn taskbarPrimaryLeft }
+        , manageHook         = myManageHook  <+> extraManageHook
+        , logHook            = dynamicLogWithPP $ myPP { ppOutput = hPutStrLn taskbarPrimaryLeft }
         , modMask            = mod4Mask
         , mouseBindings      = myMouseBindings
-        , workspaces         = rizumuWorkspaces
+        , workspaces         = myWorkspaces
         , focusFollowsMouse  = True
-        , startupHook        = rizumuStartupHook
+        , startupHook        = myStartupHook
         } `additionalKeysP`  myKeys
 
     where
         dzenPrimaryLeft :: DzenConf
-        dzenPrimaryLeft = rizumuDzenXft  { width = Just $ Percent 35 }
+        dzenPrimaryLeft = myDzenXft  { width = Just $ Percent 35 }
 
         dzenPrimaryRight :: DzenConf
-        dzenPrimaryRight = rizumuDzenXft { alignment  = Just RightAlign
+        dzenPrimaryRight = myDzenXft { alignment  = Just RightAlign
                                          , xPosition  = Just $ Percent 35
                                          , width      = Just $ Percent 55
                                          }
 
         dzenDivider :: DzenConf
-        dzenDivider = rizumuDzenXft      { alignment  = Just Centered
+        dzenDivider = myDzenXft      { alignment  = Just Centered
                                          , width      = Just $ Percent 100
                                          , height     = Just $ 1
                                          , bgColor    = Just $ "#93d44f"
                                          }
 
         dzenSecondary :: DzenConf
-        dzenSecondary = rizumuDzenXft    { alignment  = Just Centered
+        dzenSecondary = myDzenXft    { alignment  = Just Centered
                                          , yPosition  = Just $ 19
                                          , width      = Just $ Percent 100
                                          , bgColor    = Just $ "#333333"
@@ -127,7 +130,6 @@ myLayoutHook = avoidStruts $
 --{{{ Hook for managing windows
 myManageHook :: ManageHook
 myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageScratchPads scratchPadList
-
     where myActions = [ ("Xmessage"            , doCenterFloat     )
                       , ("Gmrun"               , doCenterFloat     )
                       , ("gitg"                , doCenterFloat     )
@@ -144,7 +146,14 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Pidgin"              , doShift " ⇄ "    )
                       , ("Skype"               , doShift " ⇄ "    )
                       ]
-
+-- | Default plus docks, dialogs and smarter full screening.
+extraManageHook :: ManageHook
+extraManageHook = composeAll $ concat
+    [ [ manageDocks                                      ]
+    , [ manageHook defaultConfig                         ]
+    , [ isDialog     --> doCenterFloat                   ]
+    , [ isFullscreen --> doF W.focusDown <+> doFullFloat ]
+    ]
 --}}}
 
 --{{{ Keybindings http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
