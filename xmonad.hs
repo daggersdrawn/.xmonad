@@ -158,9 +158,9 @@ extraManageHook = composeAll $ concat
 
 --{{{ Keybindings http://xmonad.org/xmonad-docs/xmonad-contrib/XMonad-Util-EZConfig.html
 myKeys :: [(String, X())]
-myKeys = [ ("M-w"                       , spawn "firefox")
-         , ("M-S-w,"                    , spawn "firefox")
+myKeys = [ ("M-g"                       , spawn "firefox")
          , ("M-S-s"                     , spawn "xscreensaver-command --lock")
+         , ("M-r"                       , spawn "rox")
          , ("M-<Backspace>"             , spawn "mpc toggle")
          , ("M-<xK_Print>"              , spawn "sleep 0.2; scrot -s")
          , ("<xK_Print>"                , spawn "scrot")

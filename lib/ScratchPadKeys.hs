@@ -171,15 +171,6 @@ scratchMc = ScratchPad
     , hook     = centerScreen 0.95
     }
 
--- | rtorrent center screen
-scratchTorrent :: ScratchPad
-scratchTorrent = ScratchPad
-    { keybind  = "M4-b"
-    , cmd      = runInTerminal ["-name", "sp-" ++ "rtorrent", "-e", "rtorrent"]
-    , query    = resource =? ("sp-" ++ "rtorrent")
-    , hook     = centerScreen 0.65
-    }
-
 -- | org-mode center screen
 scratchOrg :: ScratchPad
 scratchOrg = ScratchPad
@@ -187,6 +178,15 @@ scratchOrg = ScratchPad
     , cmd      = runInTerminal ["-name", "sp-" ++ "org", "-e", "emacs -nw --title org --name org ~/org/"]
     , query    = resource =? ("sp-" ++ "org")
     , hook     = centerScreen 0.95
+    }
+
+-- | rtorrent center screen
+scratchTorrent :: ScratchPad
+scratchTorrent = ScratchPad
+    { keybind  = "M4-b"
+    , cmd      = runInTerminal ["-name", "sp-" ++ "rtorrent", "-e", "rtorrent"]
+    , query    = resource =? ("sp-" ++ "rtorrent")
+    , hook     = centerScreen 0.65
     }
 
 -- | alsamixer center screen
