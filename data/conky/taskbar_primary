@@ -23,7 +23,7 @@ TEXT
 \
 ^fg(\#93d44f)++ \
 \
-^fg(\#ff6565)${exec python2 $HOME/.xmonad/data/pymodoro.py} \
+^fg(\#ff6565)${exec python $HOME/.xmonad/data/pymodoro.py} \
 \
 ^fg(\#93d44f)++\
 \
