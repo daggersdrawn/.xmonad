@@ -83,13 +83,13 @@ myTheme = M.fromList [ ("myActiveBorderColor",   myActiveBorderColor)
 myDzenHeight = 18
 
 --Font
-myFont = "xft:inconsolata:size=8:antialias=true"
+myFont = "-misc-fixed-*-*-*-*-11-*-*-*-*-*-*-*"
 
 --- Main Colours
 myFgColor = "#DCDCCC"
 myBgColor = "#2F2F2F"
 myHighlightedFgColor = myFgColor
-myHighlightedBgColor = "#93d44f"
+myHighlightedBgColor = "#F2583E"
 
 --- Borders
 myActiveBorderColor = myCurrentWsBgColor
@@ -140,8 +140,8 @@ myWorkspaces = [
 
 -- dzen custom options
 myDzenXft = defaultDzenXft
-    { font    = Just myFont
-    , height  = Just myDzenHeight
+    { --font    = Just myFont
+      height  = Just myDzenHeight
     , fgColor = Just myFgColor
     , bgColor = Just myBgColor
     }

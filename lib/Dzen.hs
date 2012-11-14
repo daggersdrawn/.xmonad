@@ -225,7 +225,7 @@ mkWidth (Just s) (Just (Percent c)) = return . go =<< screenWidth s
 defaultDzen :: DzenConf
 defaultDzen = nothingDzen
     { alignment = Just LeftAlign
-    , font      = Just "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+    , font      = Just "-misc-fixed-*-*-*-*-11-*-*-*-*-*-*-*"
     , fgColor   = Just "#FFFFFF"
     , bgColor   = Just "#333333"
     , exec      = ["onstart=lower"]
@@ -234,7 +234,7 @@ defaultDzen = nothingDzen
 
 -- | Same thing but with an XFT font (Verdana)
 defaultDzenXft :: DzenConf
-defaultDzenXft = defaultDzen { font = Just "Verdana-8" }
+defaultDzenXft = defaultDzen { font = Just "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*" }
 
 -- | A dzen with all options as 'Nothing' or the empty list.
 nothingDzen :: DzenConf

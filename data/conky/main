@@ -26,4 +26,4 @@ xftfont inconsolata:size=8:antialias=true
 
 # After TEXT is formatted on screen
 TEXT
-${tail /var/log/everything.log 30}
+${tail ~/.xerrors 30}
