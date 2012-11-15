@@ -170,13 +170,19 @@ myLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
 
 myPP :: PP
 myPP = dzenPP
-    { ppCurrent         = dzenColor colorBlue      myBgColor . pad
-    , ppVisible         = dzenColor colorGray      myBgColor . pad . wrapClickWorkSpace . (\a -> (a,a))
-    , ppUrgent          = dzenColor colorGreen     myBgColor . pad . wrapClickWorkSpace . (\a -> (a,a))
-    , ppHidden          = dzenColor colorWhiteAlt  myBgColor . pad . wrapClickWorkSpace . (\a -> (a,a))
-    , ppHiddenNoWindows = dzenColor colorGray      myBgColor . pad . wrapClickWorkSpace . (\a -> (a,a))
-    , ppTitle           = dzenColor myTitleFgColor ""        . pad . wrapClickTitle . titleText . dzenEscape
-    , ppLayout          = dzenColor myFgColor      ""        . pad . wrapClickLayout . \s ->
+    { ppHidden = hideNSP
+    , ppUrgent = ppUrgent dzenPP . hideNSP
+
+    -- , ppSep = (wrapFg myHighlightedBgColor "|")
+    -- , ppWsSep = ""
+    -- , ppUrgent = wrapBg myUrgentWsBgColor
+    -- , ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
+    -- , ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
+    , ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor
+
+    , ppTitle  = dzenColor myTitleFgColor "" . pad
+    , ppLayout = dzenColor myFgColor"" . pad . \s ->
+
         case s of
             "ResizableTall"          -> wrapIcon "dzen_bitmaps/tall.xbm"
             "Mirror ResizableTall"   -> wrapIcon "dzen_bitmaps/mtall.xbm"
@@ -185,66 +191,12 @@ myPP = dzenPP
             "Dishes"                 -> wrapIcon "dzen_bitmaps/ball.xbm"
             "Spiral"                 -> wrapIcon "dzen_bitmaps/ball.xbm"
             _                        -> pad s
-    -- ppHidden = hideNSP
-    -- , ppUrgent = ppUrgent dzenPP . hideNSP
-    -- , ppSep = (wrapFg myHighlightedBgColor "|")
-    -- , ppWsSep = ""
-    -- , ppUrgent = wrapBg myUrgentWsBgColor
-    -- , ppCurrent = wrapFgBg myCurrentWsFgColor myCurrentWsBgColor
-    -- , ppVisible = wrapFgBg myVisibleWsFgColor myVisibleWsBgColor
-    -- , ppHiddenNoWindows = wrapFg myHiddenEmptyWsFgColor
+
     }
     where
         wrapFgBg fgColor bgColor content = wrap ("^fg(" ++ fgColor ++ ")^bg(" ++ bgColor ++ ")") "^fg()^bg()" content
         wrapFg color content = wrap ("^fg(" ++ color ++ ")") "^fg()" content
         wrapBg color content = wrap ("^bg(" ++ color ++ ")") "^bg()" content
-        --display config
-        orderText (ws:l:t:_) = [ws,l,t]
-        titleText [] = "Desktop " ++ myArrow
-        titleText x = (shorten 82 x) ++ " " ++ myArrow
-        layoutText "Minimize T"  = "ReTall"
-        layoutText "Minimize O"  = "OneBig"
-        layoutText "Minimize TS" = "Tabbed"
-        layoutText "Minimize TM" = "Master"
-        layoutText "Minimize M"  = "Mosaic"
-        layoutText "Minimize MT" = "Mirror"
-        layoutText "Minimize G"  = "Mosaic"
-        layoutText "Minimize C"  = "Mirror"
-        layoutText "Minimize ReflectX T"  = "^fg(" ++ colorGreen ++ ")ReTall X^fg()"
-        layoutText "Minimize ReflectX O"  = "^fg(" ++ colorGreen ++ ")OneBig X^fg()"
-        layoutText "Minimize ReflectX TS" = "^fg(" ++ colorGreen ++ ")Tabbed X^fg()"
-        layoutText "Minimize ReflectX TM" = "^fg(" ++ colorGreen ++ ")Master X^fg()"
-        layoutText "Minimize ReflectX M"  = "^fg(" ++ colorGreen ++ ")Mosaic X^fg()"
-        layoutText "Minimize ReflectX MT" = "^fg(" ++ colorGreen ++ ")Mirror X^fg()"
-        layoutText "Minimize ReflectX G"  = "^fg(" ++ colorGreen ++ ")Mosaic X^fg()"
-        layoutText "Minimize ReflectX C"  = "^fg(" ++ colorGreen ++ ")Mirror X^fg()"
-        layoutText "Minimize ReflectY T"  = "^fg(" ++ colorGreen ++ ")ReTall Y^fg()"
-        layoutText "Minimize ReflectY O"  = "^fg(" ++ colorGreen ++ ")OneBig Y^fg()"
-        layoutText "Minimize ReflectY TS" = "^fg(" ++ colorGreen ++ ")Tabbed Y^fg()"
-        layoutText "Minimize ReflectY TM" = "^fg(" ++ colorGreen ++ ")Master Y^fg()"
-        layoutText "Minimize ReflectY M"  = "^fg(" ++ colorGreen ++ ")Mosaic Y^fg()"
-        layoutText "Minimize ReflectY MT" = "^fg(" ++ colorGreen ++ ")Mirror Y^fg()"
-        layoutText "Minimize ReflectY G"  = "^fg(" ++ colorGreen ++ ")Mosaic Y^fg()"
-        layoutText "Minimize ReflectY C"  = "^fg(" ++ colorGreen ++ ")Mirror Y^fg()"
-        layoutText "Minimize ReflectX ReflectY T"  = "^fg(" ++ colorGreen ++ ")ReTall XY^fg()"
-        layoutText "Minimize ReflectX ReflectY O"  = "^fg(" ++ colorGreen ++ ")OneBig XY^fg()"
-        layoutText "Minimize ReflectX ReflectY TS" = "^fg(" ++ colorGreen ++ ")Tabbed XY^fg()"
-        layoutText "Minimize ReflectX ReflectY TM" = "^fg(" ++ colorGreen ++ ")Master XY^fg()"
-        layoutText "Minimize ReflectX ReflectY M"  = "^fg(" ++ colorGreen ++ ")Mosaic XY^fg()"
-        layoutText "Minimize ReflectX ReflectY MT" = "^fg(" ++ colorGreen ++ ")Mirror XY^fg()"
-        layoutText "Minimize ReflectX ReflectY G"  = "^fg(" ++ colorGreen ++ ")Mosaic XY^fg()"
-        layoutText "Minimize ReflectX ReflectY C"  = "^fg(" ++ colorGreen ++ ")Mirror XY^fg()"
-        layoutText x = "^fg(" ++ colorGreen ++ ")" ++ x ++ "^fg()"
-        --clickable config
-        wrapClickLayout content = "^ca(1,xdotool key super+space)" ++ content ++ "^ca()"                                                           --clickable layout
-        wrapClickTitle content = "^ca(1,xdotool key super+j)" ++ content ++ "^ca()"                                                                --clickable title
-        wrapClickWorkSpace (idx,str) = "^ca(1," ++ xdo "w;" ++ xdo index ++ ")" ++ "^ca(3," ++ xdo "e;" ++ xdo index ++ ")" ++ str ++ "^ca()^ca()" --clickable workspaces
-            where
-                wsIdxToString Nothing = "1"
-                wsIdxToString (Just n) = show (n+1)
-                index = wsIdxToString (elemIndex idx myWorkspaces)
-                xdo key = "xdotool key super+" ++ key
-
 
 -- | Hide the "NSP" workspace.
 hideNSP :: WorkspaceId -> String
