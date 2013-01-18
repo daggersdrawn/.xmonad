@@ -56,7 +56,7 @@ myStartupHook :: X ()
 myStartupHook = do
           setWMName "LG3D"
           spawn     "exec conky -c ~/.xmonad/data/conky/main"
-          spawn     "exec urxvtcd"
+          spawn     "exec urxvt -e screen -l -UDRS termexec urxvtcd"
           spawn     "[[ -z \"$( pgrep firefox )\" ]] && exec firefox"
           -- spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*mail' )\" ]]                 && exec uzbl-tabbed --class=gmail      https://mail.google.com/"
           -- spawn     "[[ -z \"$( pgrep --full '[u]zbl-core.*google.com/calendar/' )\" ]] && exec uzbl-tabbed --class=gcal       https://www.google.com/calendar/"
