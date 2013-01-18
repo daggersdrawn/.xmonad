@@ -175,7 +175,7 @@ scratchMc = ScratchPad
 scratchOrg :: ScratchPad
 scratchOrg = ScratchPad
     { keybind  = "M4-o"
-    , cmd      = runInTerminal ["-name", "sp-" ++ "org", "-e", "emacs -nw --title org --name org ~/org/"]
+    , cmd      = runInTerminal ["-name", "sp-" ++ "org", "-e", "emacs -nw --title org --name org ~/org/gtd-projects.org"]
     , query    = resource =? ("sp-" ++ "org")
     , hook     = centerScreen 0.95
     }
