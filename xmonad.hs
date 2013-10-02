@@ -1,4 +1,3 @@
-
 -- rizumu's xmonad-config
 -- git://github.com/rizumu/rizumu-xmonad.git
 --
@@ -92,12 +91,12 @@ main = do
 -- Layouts
 myLayoutHook = avoidStruts $
                onWorkspace " 𐌎 "      shLayouts     $
-               onWorkspace " λ "     spiralLayout   $
+               onWorkspace " λ "     shLayouts   $
                onWorkspace " Ϣ "     webLayouts   $
                onWorkspace " ⎇ "    webLayouts     $
+               onWorkspace " ⇄ "      threecolLayout $
                onWorkspace " Φ "     webLayouts     $
                onWorkspace " Ψ "      webLayouts     $
-               onWorkspace " ⇄ "      threecolLayout $
                onWorkspace " ζ "       floatLayout    $
                standardLayouts
                where tiled           = ResizableTall nmaster delta ratio []
@@ -113,6 +112,7 @@ myLayoutHook = avoidStruts $
                                        ||| Mirror tiled
                                        ||| gridLayout
                                        ||| threecolLayout
+                                       ||| fullLayout
                      webLayouts      =     spiralLayout
                                        ||| fullLayout
                                        ||| tiled
@@ -140,9 +140,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
                       , ("Chromium"            , doShift " Ϣ "   )
                       , ("Uzbl"                , doShift " Ϣ "   )
                       , ("Uzbl-core"           , doShift " Ϣ "   )
-                      , ("gmail"               , doShift " ⎇ "  )
-                      , ("gcal"                , doShift " Φ "   )
-                      , ("soundcloud"          , doShift " Ψ "    )
+                      , ("Hipchat"             , doShift " ⎇ "    )
                       , ("Pidgin"              , doShift " ⇄ "    )
                       , ("Skype"               , doShift " ⇄ "    )
                       ]
