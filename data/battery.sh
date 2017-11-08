@@ -13,6 +13,3 @@ else
     echo -n " bat: $PERCENT%"
   fi
 fi
-
-echo ""
-if [[ "$string" == *My* ]]

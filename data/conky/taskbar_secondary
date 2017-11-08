@@ -1,19 +1,19 @@
-# conkyrc file for dzen
-###
+conky.config = {
+  background = false,
+  out_to_console = true,
+  out_to_x = false,
+  override_utf8_locale = true,
+  update_interval = 1,
+  total_run_times = 0,
+  mpd_host = '127.0.0.1',
+  mpd_port = 6600,
+};
 
-background no
-out_to_console yes
-out_to_x no
-override_utf8_locale yes
-update_interval 1
-total_run_times 0
-mpd_host 127.0.0.1
-mpd_port 6600
-
-TEXT
-^fg(\#93d44f)++\
-^fg() ${mpd_status}${if_mpd_playing} ${mpd_elapsed}/${mpd_length}$endif \
-^fg(\#909090)${mpd_title}^fg() \
-by ^fg(\#909090)${mpd_artist}^fg() \
-from ^fg(\#909090)${mpd_album}^fg() \
-^fg(\#93d44f)++\
+conky.text = [[
+  ^fg(\#93d44f)++\
+  ^fg() ${mpd_status}${if_mpd_playing} ${mpd_elapsed}/${mpd_length}$endif \
+  ^fg(\#909090)${mpd_title}^fg() \
+  by ^fg(\#909090)${mpd_artist}^fg() \
+  from ^fg(\#909090)${mpd_album}^fg() \
+  ^fg(\#93d44f)++\
+]];
