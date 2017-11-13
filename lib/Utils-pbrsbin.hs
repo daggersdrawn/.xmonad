@@ -45,6 +45,7 @@ module Utils
 
 import XMonad
 
+import XMonad.Config.Desktop        (desktopConfig)
 import XMonad.Hooks.DynamicLog      (dzenPP, PP(..), pad, dzenColor)
 import XMonad.Hooks.ManageDocks     (manageDocks, avoidStruts)
 import XMonad.Hooks.ManageHelpers   (isDialog, isFullscreen, doFullFloat, doCenterFloat)
@@ -62,7 +63,7 @@ pbWorkspaces = ["1-main","2-web","3-chat"] ++ map show [4..9 :: Int]
 pbManageHook :: ManageHook
 pbManageHook = composeAll $ concat
     [ [ manageDocks                                      ]
-    , [ manageHook defaultConfig                         ]
+    , [ manageHook desktopConfig                         ]
     , [ isDialog     --> doCenterFloat                   ]
     , [ isFullscreen --> doF W.focusDown <+> doFullFloat ]
     ]
@@ -81,7 +82,7 @@ role :: Query String
 role = stringProperty "WM_ROLE"
 
 -- Default plus hinting and avoidStruts.
-pbLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
+pbLayout = avoidStruts . layoutHints $ layoutHook desktopConfig
 
 -- | @dzenPP@ plus sorting by Xinerama, softer title/layout colors,
 --   hiding of the NSP workspace and a nice @ppLayout@ if you happen to
@@ -119,7 +120,7 @@ pbUrgencyHook = SpawnSomething "ossplay -q ~/.xmonad/data/sounds/message2.wav"
 
 -- | Default but still show urgent on visible non-focused workspace.
 --
--- > xmonad $ withUrgencyHookC pbUrgencyHook pbUrgencyConfig $ defaultConfig
+-- > xmonad $ withUrgencyHookC pbUrgencyHook pbUrgencyConfig $ desktopConfig
 --
 pbUrgencyConfig :: UrgencyConfig
 pbUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }

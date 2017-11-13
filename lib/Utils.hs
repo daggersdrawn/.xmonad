@@ -43,6 +43,7 @@ import Data.List (isInfixOf, isPrefixOf, elemIndex)
 
 import Dzen (DzenConf(..), defaultDzenXft, DzenWidth(..))
 
+import XMonad.Config.Desktop        (desktopConfig)
 import XMonad.Hooks.DynamicLog      (dzenPP, dynamicLogWithPP, PP(..), dzenColor, dzenEscape, wrap, shorten, pad)
 import XMonad.Hooks.ManageDocks     (avoidStruts)
 import XMonad.Hooks.UrgencyHook     (UrgencyHook(..), UrgencyConfig(..), urgencyConfig, SuppressWhen(OnScreen))
@@ -159,7 +160,7 @@ role :: Query String
 role = stringProperty "WM_ROLE"
 
 -- Default plus hinting and avoidStruts.
-myLayout = avoidStruts . layoutHints $ layoutHook defaultConfig
+myLayout = avoidStruts . layoutHints $ layoutHook desktopConfig
 
 -- | @dzenPP@, zenburnish title/layout colors,
 --   hiding of the NSP workspace and a nice @ppLayout@
@@ -261,7 +262,7 @@ myUrgencyHook = SpawnSomething urgencytone
 
 -- | Default but still show urgent on visible non-focused workspace.
 --
--- > xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ defaultConfig
+-- > xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ desktopConfig
 --
 myUrgencyConfig :: UrgencyConfig
 myUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }

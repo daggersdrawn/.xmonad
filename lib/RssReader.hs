@@ -49,7 +49,7 @@ import Text.HTML.TagSoup.Entity (lookupEntity, htmlEntities)
 -- > main = do
 -- >     spawnPipe "dzen2 -p -tw 100" >>= spawnReader defaultReaderConf
 -- >
--- >     xmonad $ defaultConfig
+-- >     xmonad $ desktopConfig
 -- >         { ...
 -- >         , ...
 -- >         }

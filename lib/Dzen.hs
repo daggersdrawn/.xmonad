@@ -60,7 +60,7 @@ import Graphics.X11.Xinerama (xineramaQueryScreens, xsi_width)
 -- > main = do
 -- >     d <- spawnDzen someDzen
 -- >
--- >     xmonad $ defaultConfig
+-- >     xmonad $ desktopConfig
 -- >         { ...
 -- >         , logHook = myLogHook d
 -- >         }

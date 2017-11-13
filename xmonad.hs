@@ -19,6 +19,7 @@ import Dzen --(DzenConf(..), TextAlign(..), DzenWidth(..), defaultDzenXft,
             --    spawnDzen, spawnToDzen)
 import ScratchPadKeys                   (scratchPadList, manageScratchPads, scratchPadKeys)
 
+import XMonad.Config.Desktop            (desktopConfig)
 import XMonad.Hooks.DynamicLog          (dynamicLogWithPP, PP(..))
 import XMonad.Hooks.ManageDocks         (avoidStruts, manageDocks, ToggleStruts(..) )
 import XMonad.Hooks.ManageHelpers       (isDialog, isFullscreen, doFullFloat, doCenterFloat)
@@ -48,7 +49,7 @@ main = do
     taskbarPrimaryRight <- spawnToDzen "conky -c ~/.xmonad/data/conky/taskbar_primary"  dzenPrimaryRight
     taskbarDivider      <- spawnToDzen " " dzenDivider { yPosition = Just $ 18 }
     taskbarSecondary    <- spawnToDzen "conky -c ~/.xmonad/data/conky/taskbar_secondary" dzenSecondary
-    xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ defaultConfig
+    xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ desktopConfig
         { terminal           = "urxvtcd"
         , normalBorderColor  = myTheme ! "myInactiveBorderColor"
         , focusedBorderColor = myTheme ! "myActiveBorderColor"
@@ -69,23 +70,23 @@ main = do
 
         dzenPrimaryRight :: DzenConf
         dzenPrimaryRight = myDzenXft { alignment  = Just RightAlign
-                                         , xPosition  = Just $ Percent 35
-                                         , width      = Just $ Percent 55
-                                         }
+                                     , xPosition  = Just $ Percent 35
+                                     , width      = Just $ Percent 55
+                                     }
 
         dzenDivider :: DzenConf
         dzenDivider = myDzenXft      { alignment  = Just Centered
-                                         , width      = Just $ Percent 100
-                                         , height     = Just $ 1
-                                         , bgColor    = Just $ "#93d44f"
-                                         }
+                                     , width      = Just $ Percent 100
+                                     , height     = Just $ 1
+                                     , bgColor    = Just $ "#93d44f"
+                                     }
 
         dzenSecondary :: DzenConf
         dzenSecondary = myDzenXft    { alignment  = Just Centered
-                                         , yPosition  = Just $ 19
-                                         , width      = Just $ Percent 100
-                                         , bgColor    = Just $ "#333333"
-                                         }
+                                     , yPosition  = Just $ 19
+                                     , width      = Just $ Percent 100
+                                     , bgColor    = Just $ "#333333"
+                                     }
 
 
 -- Layouts
@@ -148,7 +149,7 @@ myManageHook = composeAll [ matchAny v --> a | (v,a) <- myActions ] <+> manageSc
 extraManageHook :: ManageHook
 extraManageHook = composeAll $ concat
     [ [ manageDocks                                      ]
-    , [ manageHook defaultConfig                         ]
+    , [ manageHook desktopConfig                         ]
     , [ isDialog     --> doCenterFloat                   ]
     , [ isFullscreen --> doF W.focusDown <+> doFullFloat ]
     ]

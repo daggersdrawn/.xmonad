@@ -68,7 +68,7 @@ import qualified XMonad.StackSet as W
 -- > import XMonad.Util.EZConfig (additionalKeysP)
 -- >
 -- > main :: IO ()
--- > main = xmonad $ defaultConfig
+-- > main = xmonad $ desktopConfig
 -- >    { ...
 -- >    , manageHook = myManageHook
 -- >    , ...
