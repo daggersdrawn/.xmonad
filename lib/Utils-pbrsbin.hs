@@ -37,7 +37,7 @@ module Utils
     , name
     , role
     , hideNSP
-    , yeganesh
+    , yegonesh
     , runInTerminal
     , spawnInScreen
     , cleanStart
@@ -125,11 +125,11 @@ pbUrgencyHook = SpawnSomething "ossplay -q ~/.xmonad/data/sounds/message2.wav"
 pbUrgencyConfig :: UrgencyConfig
 pbUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }
 
--- | Spawns yeganesh <http://dmwit.com/yeganesh/>, set the environment
+-- | Spawns yegonesh <https://github.com/Klowner/yegonesh/>, set the environment
 --   variable @$DMENU_OPTIONS@ to customize dmenu appearance, this is a
 --   good @M-p@ replacement.
-yeganesh :: MonadIO m => m ()
-yeganesh = spawn "exe=`yeganesh -x -- $DMENU_OPTIONS` && eval \"exec $exe\""
+yegonesh :: MonadIO m => m ()
+yegonesh = spawn "exe=`yegonesh -x -- $DMENU_OPTIONS` && eval \"exec $exe\""
 
 -- | Execute a command in the user-configured terminal.
 --
