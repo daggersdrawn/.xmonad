@@ -265,7 +265,7 @@ myUrgencyHook = SpawnSomething urgencytone
 -- > xmonad $ withUrgencyHookC myUrgencyHook myUrgencyConfig $ desktopConfig
 --
 myUrgencyConfig :: UrgencyConfig
-myUrgencyConfig = urgencyConfig { suppressWhen = OnScreen }
+myUrgencyConfig = def
 
 -- | Spawns yegonesh <https://github.com/Klowner/yegonesh/>, set the environment
 --   variable @$DMENU_OPTIONS@ to customize dmenu appearance, this is a
