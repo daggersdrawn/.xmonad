@@ -83,7 +83,7 @@ myTheme = M.fromList [ ("myActiveBorderColor",   myActiveBorderColor)
 myDzenHeight = 18
 
 --Font
-myFont = "xft:inconsolata:size=8:antialias=true"
+myFont = "xft:inconsolataGo Nerd Font:size=10:antialias=true"
 
 --- Main Colours
 myFgColor = "#DCDCCC"
